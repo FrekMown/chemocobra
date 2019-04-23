@@ -14,10 +14,10 @@
     overflow: hidden;
 }
 #ModelDescription {
-    flex: 0 0 59%;
+    flex: 0 0 69%;
 }
 #ScenOptions {
     border: 2px solid red;
-    flex: 0 0 40%;
+    flex: 0 0 30%;
     overflow: hidden;
 }

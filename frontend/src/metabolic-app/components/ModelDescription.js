@@ -4,14 +4,16 @@ import './ModelDescription.css';
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
 import ModelForm from './ModelForm';
-import * as apiCalls from '../api-calls'
 
 
 class ModelDescription extends Component {
-  state = {    
-    chosenBaseModel: {},
-    currentScen: {},
-  };
+
+  constructor(props) {
+    super(props);
+    this.state = {    
+      chosenBaseModel: {},
+    };    
+  }
   static contextType = AppContext;
 
   // **************************************
@@ -19,7 +21,7 @@ class ModelDescription extends Component {
   // **************************************
 
   componentWillMount() {
-    // Load initial model list
+    // Load initial ...this.context.currentScenmodel list
     fetch('metabolic/see_available_models')
     .then(response => response.json())
       .then(data => this.context.setAllModels(data))
@@ -29,12 +31,13 @@ class ModelDescription extends Component {
   // **************************************
   // Functions 
   // **************************************
-  async changeBaseModel(e) {
-    if (e.target.value !== "None") {
-      let chosenBaseModel = await apiCalls.getModelFromId(e.target.value,true);
-      this.setState({ chosenBaseModel });
-    }
-    else this.context.setBaseModel({});
+
+  async changeBaseModel(modelId) {
+    let baseModel = await this.context.getModel(modelId);
+    this.context.setCurrentScen({
+     ...this.context.currentScen,
+     baseModel
+    });
   }
 
   // ***************************************
@@ -60,24 +63,22 @@ class ModelDescription extends Component {
     ];
 
     // Creation of list of reactions in chosen Model
-    let selModelReactIds = [];
-    if ("reactions" in this.state.chosenBaseModel) {
-      selModelReactIds = this.state.chosenBaseModel.reactions.map(r=>r.id);
-    }
+    // let selModelReactIds = [];
+    // if ("reactions" in this.state.chosenBaseModel) {
+    //   selModelReactIds = this.state.chosenBaseModel.reactions.map(r=>r.id);
+    // }
 
 
     return (
       <div id="ModelDescription">
         <ModelForm 
           chosenBaseModel={this.state.chosenBaseModel}
-          currentScen={this.state.currentScen}
           changeBaseModel={this.changeBaseModel.bind(this)}
-          selModelReactIds={selModelReactIds}
         />
         <div id="model-table">
           <ReactTable 
             className="-striped -highlight"
-            data={this.state.chosenBaseModel.reactions}
+            data={this.context.currentScen.baseModel.reactions}
             columns={columns}
             filterable
             defaultPageSize={15}
