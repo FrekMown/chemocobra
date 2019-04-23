@@ -1,0 +1,22 @@
+#ModelDescription {
+    font-size: 0.7em;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    overflow: scroll;
+}
+
+#model-options {
+    border: 2px solid darkred;
+    border-radius: 5px;
+    padding: 4px;
+    margin: 4px;
+}
+
+#model-table {
+    border: 2px solid darkred;
+    border-radius: 5px;
+    margin: 4px;
+    padding: 4px;
+    font-size: 0.8em;
+}

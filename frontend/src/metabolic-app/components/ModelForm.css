@@ -1,0 +1,28 @@
+#ModelForm {
+    border: 2px solid darkred;
+    margin: 4px;
+    padding: 4px;
+    border-radius: 5px;
+}
+
+#new-scen-form {
+    display: flex;
+    align-items: center;
+    background-color: antiquewhite;
+    margin-top: 4px;
+}
+
+#new-scen-form-title {
+    margin-right: 4px;
+    margin-left: 4px;
+    font-weight: bold;
+}
+
+#ModelForm label {
+    padding: 2px;
+    font-weight: bold;
+}
+
+#ModelForm button {
+    margin-right: 10px;
+}

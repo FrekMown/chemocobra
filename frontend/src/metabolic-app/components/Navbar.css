@@ -1,0 +1,18 @@
+#Navbar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#Navbar-title {
+    font-weight: bold;
+    color: darkgreen;
+    vertical-align: middle;
+    font-size: 1.3em;
+    /* padding-right: 10em; */
+}
+
+#Navbar-switch-button {
+    margin: 0;
+    /* padding-left: 0.5em; */
+}
