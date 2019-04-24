@@ -18,7 +18,7 @@ class App extends Component {
     runOK: false, // selScen in allSelScens --> Effectively added at least one scenario
     currentScen: {
       id:'New Scenario',
-      modifReacts:[],
+      modifReacts:{},
       baseModel:{},
       objective:''
     }, // scenario used in ModelDescription
@@ -38,7 +38,7 @@ class App extends Component {
     this.setState(() => ({ currentScen: scen }))
   }
   addSelScen = (selScen) => {
-    this.setState((state) => ({ allSelScens: state.allSelScens.concat([selScen]) }))
+    this.setState((state) => ({ allSelScens: state.allSelScens.filter(scen=>scen.id!==selScen.id).concat([selScen]) }))
   }
   removeSelScen = (selScen) => {
     this.setState(state => ({ allSelScens: state.selScen.filter(scen => scen.id !== selScen.id) }))
@@ -47,7 +47,7 @@ class App extends Component {
     this.setState({ runOK: ok });
   }
   addScen = (selScen) => {
-    this.setState(state => ({ allScens: state.allScens.concat([selScen]) }))
+    this.setState(state => ({ allScens: state.allScens.filter(scen=>scen.id!==selScen.id).concat([selScen]) }))
   }
   removeScen = (selScenId) => {
     this.setState(state => ({ allScens: state.allScens.filter(scen => scen.id !== selScenId) }))

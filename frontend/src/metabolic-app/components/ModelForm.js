@@ -12,7 +12,7 @@ class ModelForm extends Component {
       newScenBaseModelId: 'None',
       newScenObjectiveId: '',
       objectiveOK: false
-    }    
+    }
   }
   static contextType = AppContext;
 
@@ -21,15 +21,35 @@ class ModelForm extends Component {
   }
 
   handleSelScenChange(e) {
+    this.setState({selScenId: e.target.value});
     let currentScen;
     if (e.target.value !== "newScen") {
-      currentScen = this.context.allScens.filter(scen=>scen.id===e.target.value)[0]
+      currentScen = this.context.allScens.filter(scen => scen.id === e.target.value)[0]
       this.context.setCurrentScen(currentScen);
+    }
+    else {
+      // Reset currentScen
+      this.context.setCurrentScen({
+        id: 'New Scenario',
+        modifReacts: {},
+        baseModel: {},
+        objective: ''
+      });
+      // Reset state variables
+      this.setState({
+        newScenId: 'New Scenario',
+        newScenBaseModelId: 'None',
+        newScenObjectiveId: '',
+        objectiveOK: false
+      })
+      
+
     }
   }
 
+
   handleChangeBaseModel(e) {
-    this.setState({newScenBaseModelId:e.target.value});
+    this.setState({ newScenBaseModelId: e.target.value });
     if (e.target.value !== "None") this.props.changeBaseModel(e.target.value);
 
   }
@@ -39,22 +59,22 @@ class ModelForm extends Component {
 
     let objectiveOK = false;
     if ("reactions" in this.context.currentScen.baseModel) {
-      objectiveOK = this.context.currentScen.baseModel.reactions.filter(r=>r.id===newScenObjectiveId).length>0;
+      objectiveOK = this.context.currentScen.baseModel.reactions.filter(r => r.id === newScenObjectiveId).length > 0;
       if (objectiveOK) {
-        this.context.setCurrentScen({...this.context.currentScen, objective:e.target.value});
+        this.context.setCurrentScen({ ...this.context.currentScen, objective: e.target.value });
       }
     }
-    this.setState({newScenObjectiveId, objectiveOK});
+    this.setState({ newScenObjectiveId, objectiveOK });
   }
   handleChangeScenId(e) {
-    this.setState({newScenId: e.target.value});
-    this.context.setCurrentScen({...this.context.currentScen, id:e.target.value});
+    this.setState({ newScenId: e.target.value });
+    this.context.setCurrentScen({ ...this.context.currentScen, id: e.target.value });
   }
   handleSaveButton() {
     this.context.addScen(this.context.currentScen);
     this.context.addSelScen(this.context.currentScen);
     this.context.setSelScen(this.context.currentScen);
-    this.setState({ selScenId: this.context.currentScen.id});
+    this.setState({ selScenId: this.context.currentScen.id });
   }
 
   render() {
@@ -66,11 +86,11 @@ class ModelForm extends Component {
       <option key={scen.id}>{scen.id}</option>
     )));
     // Submit Button active only if Base model selected and Objective ok --> verify form
-    let formOK = (this.state.objectiveOK && this.state.newScenBaseModelId!=="None");
-    
+    let formOK = (this.state.objectiveOK && this.state.newScenBaseModelId !== "None");
+
     // If Objective function does not exist, background color is red
     let objectiveStyle = {};
-    if (!this.state.objectiveOK) objectiveStyle = {backgroundColor:'#fc9b8a'};
+    if (!this.state.objectiveOK) objectiveStyle = { backgroundColor: '#fc9b8a' };
 
     // If New Scen selected --> ask for info for new scen
     let newScenForm;
@@ -90,7 +110,7 @@ class ModelForm extends Component {
           </div>
           <label>
             Scenario Name
-            <input 
+            <input
               type="text"
               value={this.state.newScenId}
               onChange={this.handleChangeScenId.bind(this)}
@@ -98,7 +118,7 @@ class ModelForm extends Component {
           </label>
           <label>
             Base Model
-            <select 
+            <select
               value={this.state.newScenBaseModelId}
               onChange={this.handleChangeBaseModel.bind(this)}
             >
@@ -108,18 +128,18 @@ class ModelForm extends Component {
           <label>
             Objective
             <input
-              type="text" 
+              type="text"
               value={this.state.newScenObjectiveId}
               onChange={this.handleObjectiveChange.bind(this)}
               style={objectiveStyle}
             />
           </label>
           <div>
-            <button 
+            <button
               disabled={!formOK}
               onClick={this.handleSaveButton.bind(this)}
             >
-            Save            
+              Save
             </button>
           </div>
 
@@ -127,14 +147,14 @@ class ModelForm extends Component {
       )
     }
 
-    
+
 
     return (
       <div id="ModelForm">
         <label>
           Selected Scenario:
-          <select 
-            value={this.state.selScenId} 
+          <select
+            value={this.state.selScenId}
             onChange={this.handleSelScenChange.bind(this)}> {selScenMenuOptions}
           </select>
         </label>
