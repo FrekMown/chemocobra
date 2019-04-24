@@ -1,7 +1,6 @@
 #ScenElement {
-    font-size: 0.9em;
-    border: 2px solid darkblue;
-    /* padding: 4px; */
+    font-size: 0.8em;
+    border: 2px solid black;
     margin: 4px;
     border-radius: 5px;
     background-color: lightblue
@@ -27,4 +26,3 @@
     justify-content: space-between;
     padding: 5px;
 }
-

@@ -12,6 +12,9 @@ class ModelDescription extends Component {
     super(props);
     this.state = {    
       chosenBaseModel: {},
+      editingReactionId: '',
+      editingReactionLowerBound: 0,
+      editingReactionUpperBound: 0,
     };    
   }
   static contextType = AppContext;
@@ -40,6 +43,28 @@ class ModelDescription extends Component {
     });
   }
 
+  setEditingReaction(reaction) {
+    this.setState({
+      editingReactionId: reaction.id,
+      editingReactionLowerBound: reaction.lower_bound,
+      editingReactionUpperBound: reaction.upper_bound,
+    })
+  }
+
+  handleLowerBoundChange(e) {
+    this.setState({
+      editingReactionLowerBound: e.target.value
+    });
+  }
+
+  handleUpperBoundChange(e) {
+    this.setState({
+      editingReactionUpperBound: e.target.value
+    });
+  }
+
+
+
   // ***************************************
   render() {
 
@@ -50,14 +75,53 @@ class ModelDescription extends Component {
         columns: [
           { Header:'ID', accessor: 'id', width: 80, style:{fontWeight: 'bold'} },
           { Header:'Name', accessor: 'name' },
-          { Header:'Reaction', accessor:'reactionString' }
+          { Header:'Reaction', accessor:'reactionString' },
+          { Header:'Genes', accessor: 'gene_reaction_rule'},
         ]
       },
       {
         Header: 'Limits',
         columns: [
-          { Header: 'Lower', accessor: 'lower_bound', width:80, filterable:false, sortable:false },
-          { Header: 'Upper', accessor: 'upper_bound', width:80, filterable:false, sortable:false }
+          { 
+            Header: 'Lower', 
+            Cell: (props) => {
+              if (props.original.id!==this.state.editingReactionId) return props.original.lower_bound;              
+              else {
+                return (
+                  <input 
+                    type="text"
+                    pattern="[0-9]+"
+                    key={props.original.id}
+                    value={this.state.editingReactionLowerBound} 
+                    onChange={this.handleLowerBoundChange.bind(this)}/>
+                )
+              }
+            },width:50, filterable:false, sortable:false 
+          },
+          { 
+            Header: 'Upper',
+            Cell: (props) => {
+              if (props.original.id!==this.state.editingReactionId) return props.original.upper_bound;              
+              else {
+                return (
+                  <input 
+                    type="text"
+                    pattern="[0-9]+" 
+                    value={this.state.editingReactionUpperBound} 
+                    onChange={this.handleLowerBoundChange.bind(this)}/>
+                )
+              }
+            }, width:50, filterable:false, sortable:false 
+          },
+          { Header: 'Edit', 
+          Cell:(props) => (
+              <div 
+                id="edit-button" 
+                onClick={this.setEditingReaction.bind(this,props.original)}
+              > Edit              
+              </div>
+          ),
+          filterable: false, sortable: false, width:50 },
         ]
       }
     ];

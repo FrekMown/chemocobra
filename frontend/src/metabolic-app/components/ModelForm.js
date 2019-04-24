@@ -26,6 +26,7 @@ class ModelForm extends Component {
     if (e.target.value !== "newScen") {
       currentScen = this.context.allScens.filter(scen => scen.id === e.target.value)[0]
       this.context.setCurrentScen(currentScen);
+      this.context.setSelScen(currentScen);
     }
     else {
       // Reset currentScen
@@ -40,23 +41,17 @@ class ModelForm extends Component {
         newScenId: 'New Scenario',
         newScenBaseModelId: 'None',
         newScenObjectiveId: '',
-        objectiveOK: false
+        objectiveOK: false,
       })
-      
-
     }
   }
-
 
   handleChangeBaseModel(e) {
     this.setState({ newScenBaseModelId: e.target.value });
     if (e.target.value !== "None") this.props.changeBaseModel(e.target.value);
-
   }
   handleObjectiveChange(e) {
     let newScenObjectiveId = e.target.value;
-    // let objectiveOK = this.props.selModelReactIds.includes(newScenObjectiveId)
-
     let objectiveOK = false;
     if ("reactions" in this.context.currentScen.baseModel) {
       objectiveOK = this.context.currentScen.baseModel.reactions.filter(r => r.id === newScenObjectiveId).length > 0;
@@ -80,7 +75,7 @@ class ModelForm extends Component {
   render() {
     // Selected Scen Options
     let selScenMenuOptions = [(
-      <option key={"New Scen"} value="newScen">New Scenario</option>
+      <option key={"newScen"} value="newScen">New Scenario</option>
     )];
     selScenMenuOptions.push(this.context.allSelScens.map(scen => (
       <option key={scen.id}>{scen.id}</option>

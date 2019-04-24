@@ -17,9 +17,9 @@ class ScenElement extends Component {
   }
 
   handleChangeSelected(e) {
-    this.setState(state => ({isSelected: !state.isSelected }));
-    if (this.state.isSelected) this.context.addSelScen(this.props.scen);
-    else this.context.removeSelScen(this.props.scen);
+    this.setState(state => {
+      return {isSelected: !state.isSelected }
+    });
   }
 
   render() {
@@ -34,13 +34,6 @@ class ScenElement extends Component {
           <div id="scen-element-title">
             {this.props.scen.id}
           </div>
-          <div id="scen-element-checkbox">
-            <input 
-              type="checkbox"
-              checked={this.state.isSelected}
-              onChange={this.handleChangeSelected.bind(this)}            
-            />
-          </div>          
         </div>
         <div id="scen-element-second-row">        
           <div id="scen-element-model">

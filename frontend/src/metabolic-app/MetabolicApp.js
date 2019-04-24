@@ -41,7 +41,7 @@ class App extends Component {
     this.setState((state) => ({ allSelScens: state.allSelScens.filter(scen=>scen.id!==selScen.id).concat([selScen]) }))
   }
   removeSelScen = (selScen) => {
-    this.setState(state => ({ allSelScens: state.selScen.filter(scen => scen.id !== selScen.id) }))
+    this.setState(state => ({ allSelScens: state.allSelScens.filter(scen => scen.id !== selScen.id) }))
   }
   setRunOK = (ok) => {
     this.setState({ runOK: ok });
