@@ -7,77 +7,76 @@ class ModelForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selScenId: 'newScen',
-      newScenId: 'New Scenario',
-      newScenBaseModelId: 'None',
+      // selScenId: 'createNewScen', // Choose between New Scenario or an existing one
+      createNewScen: true,
+      // Creation of a new scen
+      newScenId: 'New Scenario', 
+      newScenBaseModelId: {},
       newScenObjectiveId: '',
-      objectiveOK: false
+      objectiveOK: false,
+      // Choose an existing scenario
+      chosenScenId: '',
     }
   }
   static contextType = AppContext;
 
   static propTypes = {
     changeBaseModel: PT.func.isRequired,
+    chosenBaseModel: PT.object.isRequired,
   }
 
   handleSelScenChange(e) {
     this.setState({selScenId: e.target.value});
-    let currentScen;
-    if (e.target.value !== "newScen") {
-      currentScen = this.context.allScens.filter(scen => scen.id === e.target.value)[0]
-      this.context.setCurrentScen(currentScen);
-      this.context.setSelScen(currentScen);
-    }
-    else {
-      // Reset currentScen
-      this.context.setCurrentScen({
-        id: 'New Scenario',
-        modifReacts: {},
-        baseModel: {},
-        objective: ''
-      });
-      // Reset state variables
-      this.setState({
-        newScenId: 'New Scenario',
-        newScenBaseModelId: 'None',
-        newScenObjectiveId: '',
-        objectiveOK: false,
-      })
+    // if choose an existing scenario ==> set it as selScen
+    if (e.target.value !== "createNewScen") {
+      this.context.setSelScenId(e.target.value);
     }
   }
-
   handleChangeBaseModel(e) {
     this.setState({ newScenBaseModelId: e.target.value });
     if (e.target.value !== "None") this.props.changeBaseModel(e.target.value);
   }
   handleObjectiveChange(e) {
     let newScenObjectiveId = e.target.value;
-    let objectiveOK = false;
-    if ("reactions" in this.context.currentScen.baseModel) {
-      objectiveOK = this.context.currentScen.baseModel.reactions.filter(r => r.id === newScenObjectiveId).length > 0;
-      if (objectiveOK) {
-        this.context.setCurrentScen({ ...this.context.currentScen, objective: e.target.value });
-      }
-    }
+    let objectiveOK = this.props.chosenBaseModel.reactions.filter(r => r.id === newScenObjectiveId).length > 0;
     this.setState({ newScenObjectiveId, objectiveOK });
   }
-  handleChangeScenId(e) {
-    this.setState({ newScenId: e.target.value });
-    this.context.setCurrentScen({ ...this.context.currentScen, id: e.target.value });
-  }
   handleSaveButton() {
-    this.context.addScen(this.context.currentScen);
-    this.context.addSelScen(this.context.currentScen);
-    this.context.setSelScen(this.context.currentScen);
+    let newScen = {
+      id: this.state.newScenId,
+      modifReacts: [],
+      objective: this.state.newScenObjectiveId,
+      baseModel: this.props.chosenBaseModel,
+    }
+    this.context.addScen(newScen);
+    this.context.setSelScenId(this.context.currentScen.id);
+    // this.context.setCurrentScen(this.context.getSelScen());
+    // Reset state variables
+    this.setState({
+      newScenId: 'New Scenario',
+      newScenBaseModelId: 'None',
+      newScenObjectiveId: '',
+      objectiveOK: false,
+    })
     this.setState({ selScenId: this.context.currentScen.id });
+  }
+  handleChangeCreateScen(e) {
+    this.setState({createNewScen: !this.state.createNewScen});
+  }
+  handleChangeChosenScenId(e) {
+    this.setState({chosenScenId: e.target.value});
+    this.context.setSelScenId(e.target.value);
+  }
+  handleChangeScenId(e) {
+    this.setState({newScenId: e.target.value});
   }
 
   render() {
     // Selected Scen Options
     let selScenMenuOptions = [(
-      <option key={"newScen"} value="newScen">New Scenario</option>
+      <option key={"newScen"} value="createNewScen">Create New Scenario</option>
     )];
-    selScenMenuOptions.push(this.context.allSelScens.map(scen => (
+    selScenMenuOptions.push(this.context.allScens.map(scen => (
       <option key={scen.id}>{scen.id}</option>
     )));
     // Submit Button active only if Base model selected and Objective ok --> verify form
@@ -87,9 +86,9 @@ class ModelForm extends Component {
     let objectiveStyle = {};
     if (!this.state.objectiveOK) objectiveStyle = { backgroundColor: '#fc9b8a' };
 
-    // If New Scen selected --> ask for info for new scen
-    let newScenForm;
-    if (this.state.selScenId === "newScen") {
+    let secondForm;
+    // If create new scen --> ask for info for new scen
+    if (this.state.createNewScen) {
       // Set Base Model Options
       let baseModelOptions = [(
         <option key="None">None</option>
@@ -98,7 +97,7 @@ class ModelForm extends Component {
         <option key={mapId}>{mapId}</option>
       )));
 
-      newScenForm = (
+      secondForm = (
         <div id="new-scen-form">
           <div id="new-scen-form-title">
             Create Scenario
@@ -141,19 +140,36 @@ class ModelForm extends Component {
         </div>
       )
     }
-
+    else {
+      let scenOptions = this.context.allScens.map(scen => (
+        <option key={scen.id}>{scen.id}</option>
+      ))
+      secondForm = (
+        <label>
+          Choose Scenario:
+          <select
+            value={this.state.chosenScenId}
+            onChange={this.handleChangeChosenScenId.bind(this)}
+          >
+            {scenOptions}
+          </select>
+        </label>
+      )
+    }
 
 
     return (
       <div id="ModelForm">
         <label>
-          Selected Scenario:
-          <select
-            value={this.state.selScenId}
-            onChange={this.handleSelScenChange.bind(this)}> {selScenMenuOptions}
-          </select>
+          Create new Scenario ?
+          <input 
+            type="checkbox"
+            value={this.state.createNewScen}
+            onChange={this.handleChangeCreateScen.bind(this)}
+            checked={this.state.createNewScen}
+          />
         </label>
-        {newScenForm}
+        {secondForm}
       </div>
     );
   }

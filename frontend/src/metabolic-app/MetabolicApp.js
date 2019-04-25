@@ -10,38 +10,43 @@ class App extends Component {
   state = {
     allModelIds: [], // Ids of available models
     allModels:{}, // All downloaded models
-    // baseModelId: {}, // Base model from where scenarios are defined
     allScens: [], // All defined scenarios
-    allSelScens: [], // All selected scenarios --> Carbon/Metabolite balance
-    selScen: {}, // selected scenario for plot with escher
+    selScenId: '', // selected scenario for plot with escher
+    selScen: {},
     page: 'options', //can be options or results
     runOK: false, // selScen in allSelScens --> Effectively added at least one scenario
-    currentScen: {
-      id:'New Scenario',
-      modifReacts:{},
-      baseModel:{},
-      objective:''
-    }, // scenario used in ModelDescription
   };
 
   // Definition of functions to manage context
   setAllModels = (allModelIds) => {
     this.setState(() => ({ allModelIds }))
   }
-  setBaseModelId = (model) => {
-    this.setState(() => ({ baseModelId: model }))
+  setSelScenId = (selScenId) => {
+    this.setState({ selScenId });
   }
-  setSelScen = (selScen) => {
-    this.setState(() => ({ selScen: selScen }))
+  getSelScen = () => {
+    if (this.state.selScenId !== '') return this.state.allScens.filter(scen=>scen.id===this.state.selScenId)[0];
+    else return {};
   }
-  setCurrentScen = (scen) => {
-    this.setState(() => ({ currentScen: scen }))
+  addModifReactionToScen(scenId,reactionId, lowerBound, upperBound) {
+    let scen = Object.assign({},this.state.allScens.filter(scen=>scen.id===scenId)[0]);
+    scen.modifReacts = {...scen.modifReacts }
+    scen.modifReacts[reactionId] = [lowerBound,upperBound];
+    let allScens = this.state.allScens.map(s => {
+      if(s.id===scen.id) return scen;
+      else return s;
+    })
+    this.setState({allScens});
   }
-  addSelScen = (selScen) => {
-    this.setState((state) => ({ allSelScens: state.allSelScens.filter(scen=>scen.id!==selScen.id).concat([selScen]) }))
-  }
-  removeSelScen = (selScen) => {
-    this.setState(state => ({ allSelScens: state.allSelScens.filter(scen => scen.id !== selScen.id) }))
+  removeModifReactionToScen(scenId,reactionId) {
+    let scen = Object.assign({},this.state.allScens.filter(scen=>scen.id===scenId)[0]);
+    scen.modifReacts = {...scen.modifReacts }
+    delete scen.modifReacts[reactionId]
+    let allScens = this.state.allScens.map(s => {
+      if(s.id===scen.id) return scen;
+      else return s;
+    })
+    this.setState({allScens});
   }
   setRunOK = (ok) => {
     this.setState({ runOK: ok });
@@ -76,21 +81,22 @@ class App extends Component {
     } 
     return modelOut;    
   }
+
+  
   
 
   render() {
     // Definition of context for provider
     let appContext = {
       ...this.state,
-      setAllModels: this.setAllModels,
-      setBaseModel: this.setBaseModel,
-      setSelScen: this.setSelScen,
-      setCurrentScen: this.setCurrentScen,
-      addSelScen: this.addSelScen,
-      removeSelScen: this.removeSelScen,
-      addScen: this.addScen,
-      setRunOK: this.setRunOK,
+      setAllModels: this.setAllModels.bind(this),
+      setSelScenId: this.setSelScenId.bind(this),
+      getSelScen: this.getSelScen.bind(this),
+      addScen: this.addScen.bind(this),
+      setRunOK: this.setRunOK.bind(this),
       getModel: this.getModel.bind(this),
+      addModifReactionToScen: this.addModifReactionToScen.bind(this),
+      removeModifReactionToScen: this.removeModifReactionToScen.bind(this),
     }
 
     // Definition of main content

@@ -25,7 +25,9 @@ class ScenElement extends Component {
   render() {
     // modified reactions
     let modifReactsScen = Object.keys(this.props.scen.modifReacts).map(reactId => (
-      <li key={reactId}>{reactId}: {this.props.scen.modifReacts[reactId][0]}...{this.props.scen.modifReacts[reactId[1]]}</li>
+      <li key={reactId}>
+        {reactId}: {this.props.scen.modifReacts[reactId][0]} ==> {this.props.scen.modifReacts[reactId][1]}
+      </li>
     ));
     
     return (
@@ -44,9 +46,9 @@ class ScenElement extends Component {
           </div>
         </div>
         <div id="scen-element-reactions">
+          <span style={{textAlign:"center", fontWeight:"bold"}}>Modified Reactions:</span>
           {modifReactsScen}
         </div>
-
       </div>
     );
   }

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import AppContext from '../app-context';
 import './ModelDescription.css';
-// import ReactTable from 'react-table';
 import "react-table/react-table.css";
 import ModelForm from './ModelForm';
 import ModelTable from './ModelTable';
@@ -12,7 +11,7 @@ class ModelDescription extends Component {
   constructor(props) {
     super(props);
     this.state = {    
-      chosenBaseModel: {},
+      chosenBaseModel: {reactions:[]},
     };    
   }
   static contextType = AppContext;
@@ -22,7 +21,7 @@ class ModelDescription extends Component {
   // **************************************
 
   componentWillMount() {
-    // Load initial ...this.context.currentScenmodel list
+    // Load initial
     fetch('metabolic/see_available_models')
     .then(response => response.json())
       .then(data => this.context.setAllModels(data))
@@ -35,19 +34,12 @@ class ModelDescription extends Component {
 
   async changeBaseModel(modelId) {
     let baseModel = await this.context.getModel(modelId);
-    this.context.setCurrentScen({
-     ...this.context.currentScen,
-     baseModel
-    });
+    this.setState({ chosenBaseModel: baseModel });
   }
 
 
   // ***************************************
   render() {
-
-    
-
-
     return (
       <div id="ModelDescription">
         <ModelForm 
@@ -55,7 +47,9 @@ class ModelDescription extends Component {
           changeBaseModel={this.changeBaseModel.bind(this)}
         />
         <div id="model-table">
-          <ModelTable />
+          <ModelTable 
+            chosenBaseModel={this.state.chosenBaseModel}
+          />
         </div>
       </div>
     );

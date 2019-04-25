@@ -7,8 +7,6 @@ export default class ModelTable extends Component {
     super(props);
     this.state = {
       editingReactionId: '',
-      editingReactionLowerBound: 0,
-      editingReactionUpperBound: 0,
     }
     this.inputRefUpperBound = React.createRef();
     this.inputRefLowerBound = React.createRef();
@@ -19,60 +17,100 @@ export default class ModelTable extends Component {
   setEditingReaction(reaction) {
     this.setState({
       editingReactionId: reaction.id,
-      editingReactionLowerBound: reaction.lower_bound,
-      editingReactionUpperBound: reaction.upper_bound,
     })
   }
 
-  handleLowerBoundChange(e) {
-    e.persist();
-    this.setState(() => {
-      console.log(e);
-      this.inputRefUpperBound.current.focus();
-      e.target.focus();
-      return {editingReactionLowerBound: e.target.value}
-    });
-  }
-
-  handleUpperBoundChange(e) {
-    e.persist();
-    this.setState({
-      editingReactionUpperBound: e.target.value
-    });
-    e.target.focus();
-    this.inputRefUpperBound.current.focus();
+  saveEditingReaction(reaction) {
+    let lowerBound = this.inputRefLowerBound.current.value;
+    let upperBound = this.inputRefUpperBound.current.value;
+    if (!isNaN(lowerBound) && !isNaN(upperBound)) {
+      lowerBound = Number(lowerBound);
+      upperBound = Number(upperBound);
+      if (lowerBound !== reaction.lower_bound || upperBound !== reaction.upper_bound) {
+        this.context.addModifReactionToScen(this.context.selScenId, reaction.id, lowerBound, upperBound);
+      }
+      else if (reaction.id in this.context.currentScen.modifReacts) {
+        this.context.removeModifReactionToScen(this.context.selScenId, reaction.id)
+      }
+    }
+    this.setState({ editingReactionId: '' });
   }
 
   cellFunctionLowerLimit(props) {
-    if (props.original.id!==this.state.editingReactionId) return props.original.lower_bound;              
-    else {
-      return (
-        <input 
-          type="text"
-          pattern="[0-9]+"
-          ref={this.inputRefLowerBound}
-          value={this.state.editingReactionLowerBound} 
-          onChange={this.handleLowerBoundChange.bind(this)}/>
-      )
+    // if reaction is being edited
+    let selScen = this.context.getSelScen();
+    if (Object.keys(selScen).length > 0) {
+      if (props.original.id === this.state.editingReactionId) {
+        return (
+          <input
+            type="text"
+            ref={this.inputRefLowerBound}
+            defaultValue={props.original.lower_bound}
+          />
+        )
+      }
+      // if reaction was edited
+      else if (props.original.id in selScen.modifReacts) {
+        return (
+          <span style={{ color: 'red', fontWeight: 'bold' }}>
+            {selScen.modifReacts[props.original.id][0]}
+          </span>
+        )
+      }
     }
+    // normal reaction        
+    else return props.original.lower_bound;
   }
 
   cellFunctionUpperLimit(props) {
-    if (props.original.id!==this.state.editingReactionId) return props.original.upper_bound;              
-    else {
-      return (
-        <input 
-          type="text"
-          pattern="[0-9]+"
-          ref={this.inputRefUpperBound}
-          key="lowerBound"
-          value={this.state.editingReactionUpperBound} 
-          onChange={this.handleUpperBoundChange.bind(this)}
-          autofocus={true}
+    let selScen = this.context.getSelScen();
+    if (Object.keys(selScen).length > 0) {
+      // if reaction is being edited
+      if (props.original.id === this.state.editingReactionId) {
+        return (
+          <input
+            type="text"
+            ref={this.inputRefUpperBound}
+            defaultValue={props.original.upper_bound}
           />
-      )
+        )
+      }
+      // if reaction was edited
+      else if (props.original.id in selScen.modifReacts){
+        return (
+          <span style={{ color: 'red', fontWeight: 'bold' }}>
+            {this.context.currentScen.modifReacts[props.original.id][1]}
+          </span>
+        )
+      }
     }
+    else return props.original.upper_bound;
   }
+
+  cellFunctionEditLimits(props) {
+    if (this.context.currentScen === this.context.getSelScen()) {
+      if (props.original.id === this.state.editingReactionId) {
+        return (
+          <div
+            id="save-button"
+            onClick={this.saveEditingReaction.bind(this, props.original)}
+          > Save
+            </div>
+        )
+      }
+      else {
+        return (
+          <div
+            id="edit-button"
+            onClick={this.setEditingReaction.bind(this, props.original)}
+          > Edit
+            </div>
+        )
+      }
+    }
+    else return "";
+  }
+
 
 
   render() {
@@ -81,37 +119,31 @@ export default class ModelTable extends Component {
       {
         Header: 'Description',
         columns: [
-          { Header:'ID', accessor: 'id', width: 80, style:{fontWeight: 'bold'} },
-          { Header:'Name', accessor: 'name' },
-          { Header:'Reaction', accessor:'reactionString' },
-          { Header:'Genes', accessor: 'gene_reaction_rule'},
+          { Header: 'ID', accessor: 'id', width: 80, style: { fontWeight: 'bold' } },
+          { Header: 'Name', accessor: 'name' },
+          { Header: 'Reaction', accessor: 'reactionString' },
+          { Header: 'Genes', accessor: 'gene_reaction_rule' },
         ]
       },
       {
         Header: 'Limits',
         columns: [
-          { 
-            Header: 'Lower', Cell: this.cellFunctionLowerLimit.bind(this), width:50, filterable:false, sortable:false 
+          {
+            Header: 'Lower', Cell: this.cellFunctionLowerLimit.bind(this), width: 50, filterable: false, sortable: false
           },
-          { 
-            Header: 'Upper', Cell: this.cellFunctionUpperLimit.bind(this), width:50, filterable:false, sortable:false 
+          {
+            Header: 'Upper', Cell: this.cellFunctionUpperLimit.bind(this), width: 50, filterable: false, sortable: false
           },
-          { Header: 'Edit', 
-          Cell:(props) => (
-              <div 
-                id="edit-button" 
-                onClick={this.setEditingReaction.bind(this,props.original)}
-              > Edit              
-              </div>
-          ),
-          filterable: false, sortable: false, width:50 },
+          {
+            Header: 'Edit', Cell: this.cellFunctionEditLimits.bind(this), filterable: false, sortable: false, width: 50
+          },
         ]
       }
     ];
-    return(
+    return (
       <ReactTable
         className="-striped -highlight"
-        data={this.context.currentScen.baseModel.reactions}
+        data={this.props.chosenBaseModel.reactions}
         columns={columns}
         filterable
         defaultPageSize={15}
