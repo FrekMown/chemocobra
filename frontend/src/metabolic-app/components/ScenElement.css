@@ -30,3 +30,8 @@
 #scen-element-reactions {
     padding: 4px;
 }
+
+#scen-element-remove {
+    color: red;
+    padding-right: 5px;
+}

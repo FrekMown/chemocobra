@@ -6,17 +6,7 @@ import PT from 'prop-types';
 class ModelForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      // selScenId: 'createNewScen', // Choose between New Scenario or an existing one
-      createNewScen: true,
-      // Creation of a new scen
-      newScenId: 'New Scenario', 
-      newScenBaseModelId: {},
-      newScenObjectiveId: '',
-      objectiveOK: false,
-      // Choose an existing scenario
-      chosenScenId: '',
-    }
+    
   }
   static contextType = AppContext;
 

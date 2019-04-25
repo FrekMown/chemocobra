@@ -16,10 +16,13 @@ class ScenElement extends Component {
     scen: PT.object.isRequired,
   }
 
-  handleChangeSelected(e) {
+  handleChangeSelected() {
     this.setState(state => {
       return {isSelected: !state.isSelected }
     });
+  }
+  handleRemoveScen() {
+    this.context.removeScen(this.props.scen);
   }
 
   render() {
@@ -29,6 +32,16 @@ class ScenElement extends Component {
         {reactId}: {this.props.scen.modifReacts[reactId][0]} ==> {this.props.scen.modifReacts[reactId][1]}
       </li>
     ));
+
+    // Remove scen only if more than one scen in allscens
+    let removeDiv = <div></div>
+    if (this.context.allScens.length>1) {
+      removeDiv = (
+        <div id="scen-element-remove" onClick={this.handleRemoveScen.bind(this)}>
+            X
+        </div>
+      )
+    }
     
     return (
       <div id="ScenElement">
@@ -36,10 +49,11 @@ class ScenElement extends Component {
           <div id="scen-element-title">
             {this.props.scen.id}
           </div>
+          {removeDiv}
         </div>
         <div id="scen-element-second-row">        
           <div id="scen-element-model">
-            <span style={{fontWeight:"bold"}}>Model:</span> {this.props.scen.baseModel.id}
+            <span style={{fontWeight:"bold"}}>Model:</span> {this.props.scen.baseModelId}
           </div>
           <div id="scen-element-objective">
           <span style={{fontWeight:"bold"}}>Objective:</span> {this.props.scen.objective}

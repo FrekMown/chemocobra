@@ -7,17 +7,18 @@ import Navbar from './components/Navbar'
 import * as apiCalls from './api-calls';
 
 class App extends Component {
-  state = {
-    allModelIds: [], // Ids of available models
-    allModels:{}, // All downloaded models
-    allScens: [], // All defined scenarios
-    selScenId: '', // selected scenario for plot with escher
-    selScen: {},
-    page: 'options', //can be options or results
-    runOK: false, // selScen in allSelScens --> Effectively added at least one scenario
-  };
-
-  // Definition of functions to manage context
+  constructor(props) {
+    super(props);
+    this.state = {
+      allModelIds: [], // Ids of available models
+      allScens: [], // All defined scenarios
+      selScenId: '', // selected scenario for plot with escher
+      page: 'options', //can be options or results
+      runOK: false, // selScen in allSelScens --> Effectively added at least one scenario
+      allModels: [] // All downloaded models
+    };    
+    // Definition of functions to manage context
+  }
   setAllModels = (allModelIds) => {
     this.setState(() => ({ allModelIds }))
   }
@@ -54,32 +55,27 @@ class App extends Component {
   addScen = (selScen) => {
     this.setState(state => ({ allScens: state.allScens.filter(scen=>scen.id!==selScen.id).concat([selScen]) }))
   }
-  removeScen = (selScenId) => {
-    this.setState(state => ({ allScens: state.allScens.filter(scen => scen.id !== selScenId) }))
-  }
-  getModelFromScen = (scen) => {
-    let model = Object.assign({},scen.baseModelId);
-    for (let reactId of Object.keys(scen.modifReacts)) {
-      let reaction = model.reactions.filter(react => react.id === reactId)[0];
-      reaction.lower_bound = scen.modifReacts[reactId][0];
-      reaction.upper_bound = scen.modifReacts[reactId][1]
-    }
-    model.objective = scen.objective;
-    return model;
+  removeScen = (selScen) => {
+    this.setState(state => ({ allScens: state.allScens.filter(scen=>scen.id !== selScen.id) }))
   }
   // returns model if it is already stored
-  // otherwise it makes a call and returns the model from backend
-  getModel = async function(modelId) {
-    let modelOut;
-    let allModels = Object.assign({}, this.state.allModels)
-    
-    if (modelId in allModels) modelOut = this.state.allModels[modelId]
-    else {
-      modelOut = await apiCalls.getModelFromId(modelId,true);
-      allModels[modelId] = modelOut;
-      this.setState({ allModels });
-    } 
-    return modelOut;    
+  getModel (modelId) {
+    let modelOut = this.state.allModels.filter(model=>model.id===modelId);
+    if (modelOut.length>0) return modelOut[0];
+    else return {}
+  }
+  getScen (scenId) {
+    let scenOut = this.state.allScens.filter(scen=>scen.id===scenId);
+    if (scenOut.length>0) return scenOut[0];
+    else return {}
+  }
+  // Loads model if not already in allModels
+  async loadModel(modelId) {
+    if (!(modelId in this.state.allModels)) {
+      let model = await apiCalls.getModelFromId(modelId,true);
+      let allModels = this.state.allModels.filter(model=>model.id!==modelId).concat([model]) 
+      this.setState({allModels});      
+    }
   }
 
   
@@ -89,10 +85,15 @@ class App extends Component {
     // Definition of context for provider
     let appContext = {
       ...this.state,
+      //variables
+      allModels: this.state.allModels,
+      //functions
+      loadModel: this.loadModel.bind(this),
       setAllModels: this.setAllModels.bind(this),
       setSelScenId: this.setSelScenId.bind(this),
       getSelScen: this.getSelScen.bind(this),
       addScen: this.addScen.bind(this),
+      removeScen: this.removeScen.bind(this),
       setRunOK: this.setRunOK.bind(this),
       getModel: this.getModel.bind(this),
       addModifReactionToScen: this.addModifReactionToScen.bind(this),

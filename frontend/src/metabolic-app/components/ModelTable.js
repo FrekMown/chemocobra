@@ -11,7 +11,6 @@ export default class ModelTable extends Component {
     this.inputRefUpperBound = React.createRef();
     this.inputRefLowerBound = React.createRef();
   }
-
   static contextType = AppContext;
 
   setEditingReaction(reaction) {
@@ -29,7 +28,7 @@ export default class ModelTable extends Component {
       if (lowerBound !== reaction.lower_bound || upperBound !== reaction.upper_bound) {
         this.context.addModifReactionToScen(this.context.selScenId, reaction.id, lowerBound, upperBound);
       }
-      else if (reaction.id in this.context.currentScen.modifReacts) {
+      else if (reaction.id in this.context.getSelScen().modifReacts) {
         this.context.removeModifReactionToScen(this.context.selScenId, reaction.id)
       }
     }
@@ -38,64 +37,60 @@ export default class ModelTable extends Component {
 
   cellFunctionLowerLimit(props) {
     // if reaction is being edited
-    let selScen = this.context.getSelScen();
-    if (Object.keys(selScen).length > 0) {
-      if (props.original.id === this.state.editingReactionId) {
-        return (
-          <input
-            type="text"
-            ref={this.inputRefLowerBound}
-            defaultValue={props.original.lower_bound}
-          />
-        )
-      }
-      // if reaction was edited
-      else if (props.original.id in selScen.modifReacts) {
-        return (
-          <span style={{ color: 'red', fontWeight: 'bold' }}>
-            {selScen.modifReacts[props.original.id][0]}
-          </span>
-        )
-      }
+    if (props.original.id === this.state.editingReactionId) {
+      return (
+        <input
+          type="text"
+          ref={this.inputRefLowerBound}
+          defaultValue={props.original.lower_bound}
+        />
+      )
+    }
+    // if reaction was edited
+    else if (props.original.id in this.props.tableScen.modifReacts) {
+      return (
+        <span style={{ color: 'red', fontWeight: 'bold' }}>
+          {this.props.tableScen.modifReacts[props.original.id][0]}
+        </span>
+      )
     }
     // normal reaction        
     else return props.original.lower_bound;
   }
 
   cellFunctionUpperLimit(props) {
-    let selScen = this.context.getSelScen();
-    if (Object.keys(selScen).length > 0) {
-      // if reaction is being edited
-      if (props.original.id === this.state.editingReactionId) {
-        return (
-          <input
-            type="text"
-            ref={this.inputRefUpperBound}
-            defaultValue={props.original.upper_bound}
-          />
-        )
-      }
-      // if reaction was edited
-      else if (props.original.id in selScen.modifReacts){
-        return (
-          <span style={{ color: 'red', fontWeight: 'bold' }}>
-            {this.context.currentScen.modifReacts[props.original.id][1]}
-          </span>
-        )
-      }
+
+    // if reaction is being edited
+    if (props.original.id === this.state.editingReactionId) {
+      return (
+        <input
+          type="text"
+          ref={this.inputRefUpperBound}
+          defaultValue={props.original.upper_bound}
+        />
+      )
     }
+    // if reaction was edited
+    else if (props.original.id in this.props.tableScen.modifReacts) {
+      return (
+        <span style={{ color: 'red', fontWeight: 'bold' }}>
+          {this.props.tableScen.modifReacts[props.original.id][1]}
+        </span>
+      )
+    }
+
     else return props.original.upper_bound;
   }
 
   cellFunctionEditLimits(props) {
-    if (this.context.currentScen === this.context.getSelScen()) {
+    if (this.context.getSelScen() === this.props.tableScen) {
       if (props.original.id === this.state.editingReactionId) {
         return (
           <div
             id="save-button"
             onClick={this.saveEditingReaction.bind(this, props.original)}
           > Save
-            </div>
+          </div>
         )
       }
       else {
@@ -104,14 +99,12 @@ export default class ModelTable extends Component {
             id="edit-button"
             onClick={this.setEditingReaction.bind(this, props.original)}
           > Edit
-            </div>
+              </div>
         )
-      }
+      };
     }
-    else return "";
+    else return ""
   }
-
-
 
   render() {
     // Creation of columns for table
@@ -140,10 +133,17 @@ export default class ModelTable extends Component {
         ]
       }
     ];
+    // Define data for table
+    let dataTable = [];
+    let modelId = this.props.tableScen.baseModelId
+    if (modelId !== "noModel" && Object.keys(this.context.getModel(modelId).length > 0)) {
+      dataTable = this.context.getModel(this.props.tableScen.baseModelId).reactions;
+    }
+
     return (
       <ReactTable
         className="-striped -highlight"
-        data={this.props.chosenBaseModel.reactions}
+        data={dataTable}
         columns={columns}
         filterable
         defaultPageSize={15}

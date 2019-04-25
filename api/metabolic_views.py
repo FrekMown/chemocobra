@@ -22,4 +22,5 @@ class GetModel(APIView):
         model_path = os.path.join(STATIC_DIR,'metabolic','models',model_id+'.json')
         with open(os.path.join(model_path)) as f:
             model = json.load(f)
+        model['id'] = model_id
         return Response(model)
