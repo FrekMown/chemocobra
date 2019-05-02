@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import AppContext from '../app-context';
 import './ModelDescription.css';
-import './ModelForm.css';
+// import './ModelForm.css';
 import "react-table/react-table.css";
 // import ModelForm from './ModelForm';
 import ModelTable from './ModelTable';

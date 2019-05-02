@@ -1,6 +1,6 @@
-#ScenOptions {
-    border: 2px solid darkred;
-    border-radius: 5px;
-    padding: 4px;
-    margin: 4px;
+#scen-options-title {
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    /* border: 1px solid black; */
 }

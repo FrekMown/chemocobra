@@ -17,7 +17,9 @@ class ScenOptions extends Component {
 
     return (
       <div id="ScenOptions">
-        <h1>List Scenarios</h1>
+      <div id="scen-options-title">
+        List Scenarios
+      </div>
         <div id="scen-options-elements">
           {allScenElements}
         </div>

@@ -7,15 +7,15 @@
 }
 
 #model-options {
-    border: 2px solid darkred;
-    border-radius: 5px;
-    padding: 4px;
-    margin: 4px;
+    border: 1px solid black;
+    /* border-radius: 5px; */
+    /* padding: 4px; */
+    /* margin: 4px; */
 }
 
 #model-table {
-    border: 2px solid darkred;
-    border-radius: 5px;
+    /* border: 1px solid black; */
+    /* border-radius: 5px; */
     margin: 4px;
     padding: 4px;
     font-size: 0.8em;
@@ -23,4 +23,26 @@
 
 #edit-button {
     color: red;
+}
+
+#new-scen-form {
+    display: flex;
+    align-items: center;
+    background-color: antiquewhite;
+    margin-top: 4px;
+}
+
+#new-scen-form-title {
+    margin-right: 4px;
+    margin-left: 4px;
+    font-weight: bold;
+}
+
+#ModelForm label {
+    padding: 2px;
+    font-weight: bold;
+}
+
+#ModelForm button {
+    margin-right: 10px;
 }

@@ -1,12 +1,15 @@
 #App {
     display: flex;
     flex-direction: column;
+    /* background-color: gainsboro; */
 }
 #Navbar {
     flex-grow: 0%;
     height: 8%;
-    border: 2px solid black;
+    border-bottom: 1px solid black;
     flex-grow: 0;
+    margin: 4px;
+
 }
 #App-content{
     display: flex;
@@ -15,9 +18,24 @@
 }
 #ModelDescription {
     flex: 0 0 69%;
+    background-color: white;
+    border-right: 1px solid gray;
+}
+#ModelForm {
+    margin: 4px;
+    padding: 4px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid gray;
 }
 #ScenOptions {
-    border: 2px solid red;
+    /* border-left: 1px solid black; */
     flex: 0 0 30%;
     overflow: hidden;
+    padding: 4px;
+    margin: 4px
+}
+
+#ModelDescription::-webkit-scrollbar {
+    width: 0px;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
 }

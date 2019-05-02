@@ -6,9 +6,9 @@
 
 #Navbar-title {
     font-weight: bold;
-    color: darkgreen;
+    /* color: darkgreen; */
     vertical-align: middle;
-    font-size: 1.3em;
+    font-size: 2em;
     /* padding-right: 10em; */
 }
 
