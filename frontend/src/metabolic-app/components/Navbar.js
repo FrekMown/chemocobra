@@ -5,6 +5,9 @@ import AppContext from '../app-context';
 class Navbar extends Component {
   static contextType = AppContext;
 
+  handleSwitchButton(e) {
+    
+  }
 
   render() {
     // switchButtonText
@@ -19,7 +22,8 @@ class Navbar extends Component {
     return(
       <div id="Navbar">
         <div id="Navbar-switch-button">
-          <button>{switchButtonText}</button>        
+          <button onClick={this.context.switchMainPage}>
+            {switchButtonText}</button>        
         </div>
         <div id="Navbar-title">
           Metabolic Modelling

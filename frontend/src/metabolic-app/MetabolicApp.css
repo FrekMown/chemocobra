@@ -39,3 +39,13 @@
     width: 0px;  /* Remove scrollbar space */
     background: transparent;  /* Optional: just make scrollbar invisible */
 }
+
+#results-left {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+}
+
+#MetabolicMap {
+    border: 1px solid black;
+}

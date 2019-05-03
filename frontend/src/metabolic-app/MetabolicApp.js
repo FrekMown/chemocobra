@@ -4,7 +4,11 @@ import AppContext from './app-context';
 import ModelDescription from './components/ModelDescription';
 import ScenOptions from './components/ScenOptions';
 import Navbar from './components/Navbar'
+import PlotResults from './components/PlotResults'
+import TableResults from './components/TableResults'
+import MetabolicMap from './components/MetabolicMap'
 import * as apiCalls from './api-calls';
+
 
 class App extends Component {
   constructor(props) {
@@ -77,6 +81,15 @@ class App extends Component {
       this.setState({allModels});      
     }
   }
+  // Switches page options vs results
+  switchMainPage() {
+    if (this.state.page === 'options') {
+      this.setState({page: 'results'})
+    }
+    else {
+      this.setState({page: 'options'})
+    }
+  }
 
   
   
@@ -98,6 +111,7 @@ class App extends Component {
       getModel: this.getModel.bind(this),
       addModifReactionToScen: this.addModifReactionToScen.bind(this),
       removeModifReactionToScen: this.removeModifReactionToScen.bind(this),
+      switchMainPage: this.switchMainPage.bind(this),
     }
 
     // Definition of main content
@@ -110,6 +124,22 @@ class App extends Component {
             <ModelDescription />
             <ScenOptions />
           </div>
+        </div>
+      );
+    }
+    else if (this.state.page==='results') {
+      content = (
+        <div id="App">
+          <Navbar />
+          <div id="App-content">
+            <div id="results-left">
+              <PlotResults />
+              <TableResults />
+            </div>
+            <MetabolicMap />
+
+          </div>
+
         </div>
       );
     }
