@@ -6,13 +6,29 @@
 
 #Navbar-title {
     font-weight: bold;
-    /* color: darkgreen; */
     vertical-align: middle;
-    font-size: 2em;
-    /* padding-right: 10em; */
+    font-size: 1.5em;
 }
 
 #Navbar-switch-button {
     margin: 0;
     /* padding-left: 0.5em; */
+}
+
+#Navbar button {
+    background-color: darkred;
+    border: none;
+    color: wheat;
+    padding: 0.3em;
+    font-size: 0.8em;
+    border: 2px solid darkkhaki;
+    border-radius: 8px;
+}
+
+#Navbar button:hover {
+    background-color: rgb(190, 4, 4);
+}
+
+#Navbar button:focus {
+    outline: 0;
 }

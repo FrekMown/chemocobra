@@ -137,9 +137,7 @@ class App extends Component {
               <TableResults />
             </div>
             <MetabolicMap />
-
           </div>
-
         </div>
       );
     }

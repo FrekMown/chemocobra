@@ -1,6 +1,7 @@
 #App {
     display: flex;
     flex-direction: column;
+    background-color: gray;
     /* background-color: gainsboro; */
 }
 #Navbar {
@@ -8,31 +9,36 @@
     height: 8%;
     border-bottom: 1px solid black;
     flex-grow: 0;
-    margin: 4px;
-
+    background-color: rgb(6, 50, 63);
+    color: wheat;
 }
 #App-content{
     display: flex;
     flex-grow: 0;
     overflow: hidden;
+    height: 100%;
 }
 #ModelDescription {
     flex: 0 0 69%;
-    background-color: white;
-    border-right: 1px solid gray;
+    border: 2px solid darkred;
+    background-color: whitesmoke;
+    border-radius: 10px;
+    margin: 3px;  
 }
 #ModelForm {
-    margin: 4px;
+    margin: 2px;
     padding: 4px;
     padding-bottom: 8px;
     border-bottom: 1px solid gray;
 }
 #ScenOptions {
-    /* border-left: 1px solid black; */
-    flex: 0 0 30%;
+    flex: 0 0 28%;
     overflow: hidden;
     padding: 4px;
-    margin: 4px
+    border: 2px solid darkred;
+    background-color: whitesmoke;
+    border-radius: 10px;
+    margin: 3px;  
 }
 
 #ModelDescription::-webkit-scrollbar {
@@ -43,9 +49,38 @@
 #results-left {
     display: flex;
     flex-direction: column;
-    border: 1px solid black;
 }
 
 #MetabolicMap {
-    border: 1px solid black;
+    border: 2px solid darkred;
+    background-color: whitesmoke;
+    border-radius: 10px;
+    margin: 3px;
+    width: 70%;
+    padding: 2px;
+}
+
+#PlotResults {
+    border: 2px solid darkred;
+    background-color: whitesmoke;
+    border-radius: 10px;
+    margin: 3px;
+    padding: 2px;
+    flex-grow: 1;
+}
+
+#TableResults {
+    border: 2px solid darkred;
+    background-color: whitesmoke;
+    border-radius: 10px;
+    margin: 3px; 
+    padding: 2px;
+    flex-grow: 1; 
+}
+
+#results-left {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 30%;
 }
