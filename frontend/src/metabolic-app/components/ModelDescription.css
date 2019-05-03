@@ -46,3 +46,9 @@
 #ModelForm button {
     margin-right: 10px;
 }
+
+#model-table input {
+    font-size: 0.9em;
+    font-weight: bold;
+    color: gray;
+}

@@ -18,7 +18,6 @@ class App extends Component {
       allScens: [], // All defined scenarios
       selScenId: '', // selected scenario for plot with escher
       page: 'options', //can be options or results
-      runOK: false, // selScen in allSelScens --> Effectively added at least one scenario
       allModels: [] // All downloaded models
     };    
     // Definition of functions to manage context
@@ -53,9 +52,6 @@ class App extends Component {
     })
     this.setState({allScens});
   }
-  setRunOK = (ok) => {
-    this.setState({ runOK: ok });
-  }
   addScen = (selScen) => {
     this.setState(state => ({ allScens: state.allScens.filter(scen=>scen.id!==selScen.id).concat([selScen]) }))
   }
@@ -82,9 +78,11 @@ class App extends Component {
     }
   }
   // Switches page options vs results
-  switchMainPage() {
+  async switchMainPage() {
     if (this.state.page === 'options') {
       this.setState({page: 'results'})
+      // run model
+      apiCalls.simulateScenAPI(this.state.allScens[0]);
     }
     else {
       this.setState({page: 'options'})
@@ -107,7 +105,6 @@ class App extends Component {
       getSelScen: this.getSelScen.bind(this),
       addScen: this.addScen.bind(this),
       removeScen: this.removeScen.bind(this),
-      setRunOK: this.setRunOK.bind(this),
       getModel: this.getModel.bind(this),
       addModifReactionToScen: this.addModifReactionToScen.bind(this),
       removeModifReactionToScen: this.removeModifReactionToScen.bind(this),

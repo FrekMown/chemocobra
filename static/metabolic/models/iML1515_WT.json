@@ -769,7 +769,7 @@
 "pyr_c":1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"b2415 and b1817 and b1819 and b2416 and b1818"
 },
 {
@@ -2110,19 +2110,6 @@
 "gene_reaction_rule":"b3571"
 },
 {
-"id":"AARC",
-"name":"Succinyl-CoA:Acetate CoA-Transferase",
-"metabolites":{
-"ac_c":-1.0,
-"accoa_c":1.0,
-"succ_c":1.0,
-"succoa_c":-1.0
-},
-"lower_bound":-1000.0,
-"upper_bound":1000.0,
-"gene_reaction_rule":""
-},
-{
 "id":"AB6PGH",
 "name":"Arbutin 6-phosphate glucohydrolase",
 "metabolites":{
@@ -2530,7 +2517,7 @@
 "pyr_c":1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"( b2416 and b2417 and b2415 and b1101 ) or ( b2415 and b2416 and b0679 )"
 },
 {
@@ -2648,7 +2635,7 @@
 "pyr_c":1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"b2415 and b1818 and b2416 and b1817 and b1819"
 },
 {
@@ -2672,7 +2659,7 @@
 "pyr_c":1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"b2417 and b2416 and b2415 and b2429"
 },
 {
@@ -5191,7 +5178,7 @@
 "pyr_c":1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"( b3722 and b2416 and b2415 ) or ( b2715 and b2416 and b2415 )"
 },
 {
@@ -5443,7 +5430,7 @@
 "pyr_c":1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"b4195 and b4193 and b2415 and b2416 and b4194"
 },
 {
@@ -6791,7 +6778,7 @@
 "pyr_c":1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"( b2715 and b2416 and b2415 ) or ( b2416 and ( b1738 and b1737 and b1736 ) and b2415 )"
 },
 {
@@ -7038,7 +7025,7 @@
 "pyr_c":1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"( b1738 and b1737 and b1736 ) and b2415 and b2416"
 },
 {
@@ -9310,7 +9297,7 @@
 "pyr_c":1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"b1200 and b1198 and b2416 and b2415 and b1199"
 },
 {
@@ -11063,7 +11050,7 @@
 "pyr_c":1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"b1850"
 },
 {
@@ -11075,7 +11062,7 @@
 "h2o_c":1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"b1851"
 },
 {
@@ -13417,8 +13404,8 @@
 "metabolites":{
 "glc__D_e":-1.0
 },
-"lower_bound":-10.0,
-"upper_bound":0.0,
+"lower_bound":-100.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"",
 "annotation":{
 "SBO":"SBO:0000627"
@@ -17294,20 +17281,6 @@
 "gene_reaction_rule":"b0904 or b2492"
 },
 {
-"id":"FPK",
-"name":"Phosphoketolase C6",
-"metabolites":{
-"actp_c":1.0,
-"e4p_c":1.0,
-"f6p_c":-1.0,
-"h2o_c":1.0,
-"pi_c":-1.0
-},
-"lower_bound":0.0,
-"upper_bound":1000.0,
-"gene_reaction_rule":"pkt_gordonii or pkt_breve"
-},
-{
 "id":"FRD2",
 "name":"Fumarate reductase",
 "metabolites":{
@@ -17443,7 +17416,7 @@
 "pyr_c":1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"b1818 and b1817 and b2416 and b1819 and b2415"
 },
 {
@@ -17456,7 +17429,7 @@
 "pyr_c":1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"b2415 and b2167 and b2169 and b2416"
 },
 {
@@ -18074,8 +18047,8 @@
 "nadp_c":-1.0,
 "nadph_c":1.0
 },
-"lower_bound":0.0,
-"upper_bound":0.0,
+"lower_bound":-1000.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"b1852"
 },
 {
@@ -18322,7 +18295,7 @@
 "pyr_c":1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"b2092 and b2415 and b2094 and b2093 and b2416"
 },
 {
@@ -18448,7 +18421,7 @@
 "pyr_c":1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"b2415 and b2416 and b1819 and b1817 and b1818"
 },
 {
@@ -18987,7 +18960,7 @@
 "pyr_c":1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"( b1621 and b2415 and b2417 and b2416 ) or ( b1101 and b2416 and b2415 and b2417 ) or ( b1819 and b2415 and b1818 and b1817 and b2416 )"
 },
 {
@@ -24150,7 +24123,7 @@
 "pyr_c":1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"b1621 and b2417 and b2415 and b2416"
 },
 {
@@ -24287,7 +24260,7 @@
 "pyr_c":1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"b2415 and b0731 and b2416"
 },
 {
@@ -24324,7 +24297,7 @@
 "pyr_c":1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"b1819 and b1818 and b1817 and b2416 and b2415"
 },
 {
@@ -25076,7 +25049,7 @@
 "pi_c":1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"b0963"
 },
 {
@@ -25484,7 +25457,7 @@
 "pyr_c":1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"( b2415 and b3599 and b2416 ) or ( b2415 and b2934 and b2933 and b2416 ) or ( b2415 and b2704 and b2702 and b2703 and b2416 )"
 },
 {
@@ -27687,7 +27660,7 @@
 "pyr_c":1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"b1850"
 },
 {
@@ -28968,7 +28941,7 @@
 "h_c":1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"b3916 or b1723"
 },
 {
@@ -28982,7 +28955,7 @@
 "tagdp__D_c":1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"b3916"
 },
 {
@@ -28996,7 +28969,7 @@
 "s7p_c":-1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"b3916"
 },
 {
@@ -32742,7 +32715,7 @@
 "sbt__D_p":-1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"b2416 and b2704 and b2703 and b2702 and b2415"
 },
 {
@@ -33592,19 +33565,6 @@
 "gene_reaction_rule":"b0729 and b0728"
 },
 {
-"id":"SUCR",
-"name":"Sucrose Hydrolyzing Enzyme",
-"metabolites":{
-"fru_c":1.0,
-"glc__D_c":1.0,
-"h2o_c":-1.0,
-"sucr_c":-1.0
-},
-"lower_bound":-1000.0,
-"upper_bound":1000.0,
-"gene_reaction_rule":"cscA"
-},
-{
 "id":"SUCRtex",
 "name":"Sucrose transport transport via diffusion (extracellular to periplasm)",
 "metabolites":{
@@ -33638,21 +33598,8 @@
 "sucr_p":-1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
-"gene_reaction_rule":"b2417 and b2415 and b2416 and b2429"
-},
-{
-"id":"SUCtpp",
-"name":"Sucrose Transport via permease",
-"metabolites":{
-"h_c":1.0,
-"h_p":-1.0,
-"sucr_c":1.0,
-"sucr_p":-1.0
-},
-"lower_bound":0.0,
 "upper_bound":1000.0,
-"gene_reaction_rule":"cscB"
+"gene_reaction_rule":"b2417 and b2415 and b2416 and b2429"
 },
 {
 "id":"SULFACabcpp",
@@ -34614,7 +34561,7 @@
 "tre_p":-1.0
 },
 "lower_bound":0.0,
-"upper_bound":0.0,
+"upper_bound":1000.0,
 "gene_reaction_rule":"b2417 and b4240 and b2416 and b2415"
 },
 {
@@ -36010,20 +35957,6 @@
 "lower_bound":-1000.0,
 "upper_bound":1000.0,
 "gene_reaction_rule":"b0241 or b0929 or b1377 or b2215"
-},
-{
-"id":"XPK",
-"name":"Phosphoketolase C5",
-"metabolites":{
-"actp_c":1.0,
-"g3p_c":1.0,
-"h2o_c":1.0,
-"pi_c":-1.0,
-"xu5p__D_c":-1.0
-},
-"lower_bound":0.0,
-"upper_bound":1000.0,
-"gene_reaction_rule":"pkt_gordonii or pkt_breve"
 },
 {
 "id":"XPPT",
@@ -48121,13 +48054,6 @@
 "formula":"C9H15N2O5"
 },
 {
-"id":"sucr_c",
-"name":"",
-"compartment":"",
-"charge":0,
-"formula":"C12H22O11"
-},
-{
 "id":"sucr_e",
 "name":"Sucrose",
 "compartment":"e",
@@ -55591,28 +55517,12 @@
 "name":"arnE"
 },
 {
-"id":"cscA",
-"name":"cscA"
-},
-{
-"id":"cscB",
-"name":"cscB"
-},
-{
-"id":"pkt_breve",
-"name":"pkt_breve"
-},
-{
-"id":"pkt_gordonii",
-"name":"pkt_gordonii"
-},
-{
 "id":"s0001",
 "name":"s0001"
 }
 ],
 "id":"iML1515",
-"name":"PKT",
+"name":"WT",
 "compartments":{
 "c":"cytosol",
 "e":"extracellular space",

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import './TableResults.css';
+import './PlotResults.css';
+import AppContext from '../app-context';
 
-export default class TableResults extends Component {
-
+export default class PlotResults extends Component {
+  static contextType = AppContext;
   render() {
 
     return (
-      <div id="TableResults">
+      <div id="PlotResults">
         PlotResults
       </div>
     );
