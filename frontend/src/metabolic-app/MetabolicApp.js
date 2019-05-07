@@ -8,6 +8,7 @@ import PlotResults from './components/PlotResults'
 import TableResults from './components/TableResults'
 import MetabolicMap from './components/MetabolicMap'
 import * as apiCalls from './api-calls';
+import './components/slack.css';
 
 
 class App extends Component {
@@ -18,7 +19,8 @@ class App extends Component {
       allScens: [], // All defined scenarios
       selScenId: '', // selected scenario for plot with escher
       page: 'options', //can be options or results
-      allModels: [] // All downloaded models
+      allModels: [], // All downloaded models
+      respfba:{}, // scen -> object with keys reactions and values object with reactions->flux
     };    
     // Definition of functions to manage context
   }
@@ -80,13 +82,23 @@ class App extends Component {
   // Switches page options vs results
   async switchMainPage() {
     if (this.state.page === 'options') {
+      // change page
       this.setState({page: 'results'})
       // run model
-      apiCalls.simulateScenAPI(this.state.allScens[0]);
+      let respfba = {};
+      for (let scen of this.state.allScens) {
+        let res = await apiCalls.runpFBA(scen);
+        respfba[scen.id] = res;
+      }
+      this.setState({respfba});
     }
     else {
-      this.setState({page: 'options'})
+      this.setState({page: 'options', respfba:{}});
     }
+  }
+
+  async runScens() {
+
   }
 
   
@@ -124,7 +136,24 @@ class App extends Component {
         </div>
       );
     }
-    else if (this.state.page==='results') {
+    
+    else if (this.state.page==='results' && Object.keys(this.state.respfba).length===0) {
+      content = (
+        <div id="App">
+          <Navbar />
+          <div id="App-content">
+            <div className="slack">
+              <span className="slack-dot slack-dot--a"></span>
+              <span className="slack-dot slack-dot--b"></span>
+              <span className="slack-dot slack-dot--c"></span>
+              <span className="slack-dot slack-dot--d"></span>
+            </div>            
+          </div>
+        </div>
+      );
+    }
+    
+    else if (this.state.page==='results' && Object.keys(this.state.respfba).length===this.state.allScens.length) {
       content = (
         <div id="App">
           <Navbar />

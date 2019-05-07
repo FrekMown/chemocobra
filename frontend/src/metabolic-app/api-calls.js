@@ -1,19 +1,9 @@
 
-export async function simulateScenAPI(scen) {  
-  let addr = `metabolic/simulate_scen/?baseModelId=${scen.baseModelId}&objective=${scen.objective}`
-  if (Object.keys(scen.modifReacts).length>0) {
-    let modifReacts = Object.keys(scen.modifReacts).map(reactId => (
-      reactId+'/'+scen.modifReacts[reactId].join('/')
-    )).join(',');
-    addr += `&modifReacts=${modifReacts}`;
-  }
-  console.log(addr);
-}
-
+// Run pfba and returns result
 export async function runpFBA(scen) {
   let addr = `metabolic/run_pfba/?${scenAsParams(scen)}`
   let res = await fetch(addr).then(response=>response.json())
-  console.log(res);
+  return res;
 }
 
 // Converts scen into parameter for API

@@ -18,8 +18,11 @@ class Navbar extends Component {
     return(
       <div id="Navbar">
         <div id="Navbar-switch-button">
-          <button onClick={this.context.switchMainPage} disabled={this.context.allScens.length===0}>
-            {switchButtonText}</button>
+          <button 
+            onClick={this.context.switchMainPage} 
+            disabled={this.context.allScens.length===0}>
+            {switchButtonText}
+          </button>
         </div>
         <div id="Navbar-title">
           Metabolic Modelling
