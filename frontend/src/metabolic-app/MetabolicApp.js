@@ -16,6 +16,7 @@ class App extends Component {
     super(props);
     this.state = {
       allModelIds: [], // Ids of available models
+      allMapIds: [],
       allScens: [], // All defined scenarios
       selScenId: '', // selected scenario for plot with escher
       page: 'options', //can be options or results
@@ -24,9 +25,13 @@ class App extends Component {
     };    
     // Definition of functions to manage context
   }
-  setAllModels = (allModelIds) => {
-    this.setState(() => ({ allModelIds }))
+
+  async componentDidMount() {
+    let allModelIds = await apiCalls.getAvailableModels();
+    let allMapIds = await apiCalls.getAvailableMaps();
+    this.setState({allModelIds, allMapIds});
   }
+
   setSelScenId = (selScenId) => {
     this.setState({ selScenId });
   }
@@ -112,7 +117,6 @@ class App extends Component {
       allModels: this.state.allModels,
       //functions
       loadModel: this.loadModel.bind(this),
-      setAllModels: this.setAllModels.bind(this),
       setSelScenId: this.setSelScenId.bind(this),
       getSelScen: this.getSelScen.bind(this),
       addScen: this.addScen.bind(this),

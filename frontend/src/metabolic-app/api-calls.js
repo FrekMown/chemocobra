@@ -1,4 +1,19 @@
 
+
+// Get available maps and models
+export async function getAvailableModels() {
+  let availableModels = await fetch('metabolic/see_available_models')
+      .then(response => response.json())
+      .catch(response => console.log(response))
+  return availableModels;
+}
+export async function getAvailableMaps() {
+  let availableMaps = await fetch('metabolic/see_available_maps')
+      .then(response => response.json())
+      .catch(response => console.log(response))
+  return availableMaps;
+}
+
 // Run pfba and returns result
 export async function runpFBA(scen) {
   let addr = `metabolic/run_pfba/?${scenAsParams(scen)}`
@@ -16,6 +31,13 @@ function scenAsParams(scen) {
     addr += `&modifReacts=${modifReacts}`;
   }
   return addr;
+}
+
+export async function getMapFromId(mapId) {
+  let mapOut = await fetch(`metabolic/get_map/?id=${mapId}`)
+    .then(response => response.json())
+    .catch(response => console.log(response));
+  return mapOut;
 }
 
 export async function getModelFromId(modelId,addReactionString=false) {

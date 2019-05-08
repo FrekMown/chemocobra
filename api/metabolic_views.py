@@ -34,6 +34,15 @@ class GetAvailableModels(APIView):
         available_models = [f.split('.')[0] for f in os.listdir(models_path) if f.endswith('.json')]
         return Response(available_models)
 
+class GetAvailableMaps(APIView):
+    """
+    Returns all afuncsvailable models locally
+    """
+    def get(self,request):
+        maps_path = os.path.join(STATIC_DIR,'metabolic','maps')
+        available_maps = [f.split('.')[0] for f in os.listdir(maps_path) if f.endswith('.json')]
+        return Response(available_maps)
+
 class GetModel(APIView):
     """
     Returns JSON representation of a metabolic model
@@ -45,3 +54,16 @@ class GetModel(APIView):
             model = json.load(f)
         model['id'] = model_id
         return Response(model)
+
+class GetMap(APIView):
+    """
+    Returns JSON representation of a metabolic model
+    """
+    def get(self,request):
+        map_id = request.query_params.get('id')
+        map_path = os.path.join(STATIC_DIR,'metabolic','maps',map_id+'.json')
+        with open(os.path.join(map_path)) as f:
+            map_out = json.load(f)
+        map_out[0]['map_name'] = map_id
+        map_out[0]['map_id'] = map_id
+        return Response(map_out)

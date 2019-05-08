@@ -28,10 +28,7 @@ class ModelDescription extends Component {
 
   componentWillMount() {
     // Load initial
-    fetch('metabolic/see_available_models')
-    .then(response => response.json())
-      .then(data => this.context.setAllModels(data))
-    .catch(response => console.log(response))
+    
   }
 
   // **************************************
