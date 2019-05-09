@@ -1,0 +1,20 @@
+#MetabolicMap {
+    display: flex;
+    flex-direction: column;
+    padding: 4px;
+    /* align-items: center; */
+}
+
+#metabolic-map-form {
+    display: flex;
+    justify-content: space-around;
+    font-size: 0.75em;
+    padding: 8px;
+    margin: 4px;
+    /* border: 1px solid black; */
+}
+
+#metabolic-map-form label select {
+    /* border: 1px solid black; */
+    /* margin-right: 5px; */
+}

@@ -100,13 +100,7 @@ class App extends Component {
     else {
       this.setState({page: 'options', respfba:{}});
     }
-  }
-
-  async runScens() {
-
-  }
-
-  
+  }  
   
 
   render() {
@@ -171,6 +165,10 @@ class App extends Component {
         </div>
       );
     }
+
+    // For debug !!
+    // content = <MetabolicMap />
+    
 
     return (
       <AppContext.Provider value={appContext}>
