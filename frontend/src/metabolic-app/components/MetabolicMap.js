@@ -3,6 +3,8 @@ import './MetabolicMap.css';
 import AppContext from '../app-context';
 import * as apiCalls from '../api-calls';
 import * as escher from 'escher-vis';
+import './builder.css';
+// import escher from './escher';
 
 export default class MetabolicMap extends Component {
   constructor(props) {
@@ -48,8 +50,19 @@ export default class MetabolicMap extends Component {
     let scen = this.context.getSelScen();
     let model = this.context.getModel(scen.baseModelId);
 
-    let escherOptions = null;
+    // Create dictionary with data for escher
+    let reactionData = {}
+    for (let reaction of model.reactions) {
+      if (reaction.id in this.context.respfba[this.context.selScenId]) {
+        reactionData[reaction.id] = this.context.respfba[this.context.selScenId][reaction.id];
+      }
+      else {
+        reactionData[reaction.id] = 0;
+      }
+    }
 
+    // Escher
+    let escherOptions = {};
     if (this.state.selMap.length>0) {
       // Create escher builder
       let escherBuilder = escher.Builder(
@@ -59,7 +72,10 @@ export default class MetabolicMap extends Component {
         this.escherRef.current, // selection
         escherOptions, // options
       );
-      escherBuilder.view_mode();
+
+      escherBuilder.set_reaction_data([reactionData])
+      
+      // escherBuilder.view_mode();
     }
 
     return (
