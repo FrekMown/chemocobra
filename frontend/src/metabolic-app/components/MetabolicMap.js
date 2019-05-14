@@ -62,7 +62,10 @@ export default class MetabolicMap extends Component {
     }
 
     // Escher
-    let escherOptions = {};
+    let escherOptions = {
+      never_ask_before_quit: true,
+      reaction_style: ['color', 'size', 'text', 'abs'],
+    };
     if (this.state.selMap.length>0) {
       // Create escher builder
       let escherBuilder = escher.Builder(
@@ -79,7 +82,7 @@ export default class MetabolicMap extends Component {
     }
 
     return (
-      <div id="MetabolicMap" ref={this.escherRef}>
+      <div id="MetabolicMap">
         <div id="metabolic-map-form">
           <label>
             Choose Scenario:
@@ -99,7 +102,7 @@ export default class MetabolicMap extends Component {
             </select>
           </label>
         </div>
-        <div id="metabolic-map-escher">
+        <div id="metabolic-map-escher" ref={this.escherRef}>
           Metabolic Map
         </div>
       </div>

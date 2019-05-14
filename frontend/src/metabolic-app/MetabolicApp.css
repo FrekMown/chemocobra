@@ -1,3 +1,6 @@
+body {
+    color: rgb(65, 65, 65);
+}
 #App {
     display: flex;
     flex-direction: column;

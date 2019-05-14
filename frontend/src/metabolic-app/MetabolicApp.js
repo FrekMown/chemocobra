@@ -119,6 +119,7 @@ class App extends Component {
       addModifReactionToScen: this.addModifReactionToScen.bind(this),
       removeModifReactionToScen: this.removeModifReactionToScen.bind(this),
       switchMainPage: this.switchMainPage.bind(this),
+      getScen: this.getScen.bind(this),
     }
 
     // Definition of main content
