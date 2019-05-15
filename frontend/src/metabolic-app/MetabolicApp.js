@@ -168,7 +168,7 @@ class App extends Component {
     }
 
     // For debug !!
-    // content = <MetabolicMap />
+    content = <PlotResults />
     
 
     return (

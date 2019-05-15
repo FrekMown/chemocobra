@@ -1,4 +1,13 @@
-
+// Runs FVA for a specific reaction given a list of scenarios
+export async function runFVAforReaction(reactId, scens, fractionOptimum) {
+  let promises = scens.map((scen) => (
+    fetch(`metabolic/run_fva/?${scenAsParams(scen)}&reactId=${reactId}&fractionOpt=${fractionOptimum}`)
+  ));
+  let result = await Promise.all(promises)
+    .then(response=>response.json())
+    .catch(response=>console.log(response));
+  return result;
+}
 
 // Get available maps and models
 export async function getAvailableModels() {

@@ -22,7 +22,9 @@ class RunFVA(APIView):
         scen = met_funcs.get_scen_from_request(request)
         model = met_funcs.get_model_from_scen(scen)
         react_id = request.query_params('reactId')
-        return Response(met_funcs.run_fva(model,react_id))
+        fractionOpt = request.query_params('fractionOpt')
+
+        return Response(met_funcs.run_fva(model,react_id,fractionOpt))
 
 
 class GetAvailableModels(APIView):

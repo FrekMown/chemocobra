@@ -35,9 +35,9 @@ def run_pfba(model):
         res = {}
     return res
 
-def run_fva(model,reaction_id):
+def run_fva(model,reaction_id,fractionOptimum):
     """
     Returns [lower_bound,upper_bound] for a specific reaction
     """
-    res = cameo.flux_variability_analysis(model,[reaction_id],fraction_of_optimum=0.5)
+    res = cameo.flux_variability_analysis(model,[reaction_id],fraction_of_optimum=fractionOptimum)
     return [res.data_frame['lower_bound'].values[0],res.data_frame['upper_bound'].values[0]]
