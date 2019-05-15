@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import './TableResults.css';
+import './MetaboliteResults.css';
 import AppContext from '../app-context';
 
-export default class TableResults extends Component {
+export default class MetaboliteResults extends Component {
   static contextType = AppContext;
   render() {
 
     return (
-      <div id="TableResults">
-        TableResults
+      <div id="MetaboliteResults">
+        MetaboliteResults
       </div>
     );
   }

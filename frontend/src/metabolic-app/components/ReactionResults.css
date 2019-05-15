@@ -1,0 +1,24 @@
+#ReactionResults {
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    /* position: relative; */
+}
+#reaction-results-form {
+    font-size: 0.6em;
+    /* height: 10% */
+}
+#reaction-results-plot {
+    margin: 0;
+    /* height: 90%; */
+    border: 1px solid black;
+    /* display: flex; */
+    /* flex: 1 1; */
+}
+#reaction-results-form select {
+    font-size: 0.9em;
+    font-weight: bold;
+}
+#reaction-results-form input {
+    width: 3em;
+}

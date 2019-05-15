@@ -4,8 +4,8 @@ import AppContext from './app-context';
 import ModelDescription from './components/ModelDescription';
 import ScenOptions from './components/ScenOptions';
 import Navbar from './components/Navbar'
-import PlotResults from './components/PlotResults'
-import TableResults from './components/TableResults'
+import ReactionResults from './components/ReactionResults'
+import MetaboliteResults from './components/MetaboliteResults'
 import MetabolicMap from './components/MetabolicMap'
 import * as apiCalls from './api-calls';
 import './components/slack.css';
@@ -30,6 +30,21 @@ class App extends Component {
     let allModelIds = await apiCalls.getAvailableModels();
     let allMapIds = await apiCalls.getAvailableMaps();
     this.setState({allModelIds, allMapIds});
+  }
+
+  // Returns sorted list of reactions in current models
+  getReactionsIds() {
+    let modelIds = this.state.allScens.map(scen=>scen.baseModelId);
+    modelIds = Array.from(new Set(modelIds));
+    let reactions = [];
+    modelIds.forEach(modelId => {
+      let model = this.getModel(modelId)
+      let reactionsModel = model.reactions.map(r=>r.id);
+      reactions = reactions.concat(reactionsModel);
+    });
+    reactions = Array.from(new Set(reactions));
+    reactions.sort();
+    return reactions;
   }
 
   setSelScenId = (selScenId) => {
@@ -120,6 +135,7 @@ class App extends Component {
       removeModifReactionToScen: this.removeModifReactionToScen.bind(this),
       switchMainPage: this.switchMainPage.bind(this),
       getScen: this.getScen.bind(this),
+      getReactionsIds: this.getReactionsIds.bind(this),
     }
 
     // Definition of main content
@@ -158,8 +174,8 @@ class App extends Component {
           <Navbar />
           <div id="App-content">
             <div id="results-left">
-              <PlotResults />
-              <TableResults />
+              <ReactionResults />
+              <MetaboliteResults />
             </div>
             <MetabolicMap />
           </div>
@@ -168,7 +184,7 @@ class App extends Component {
     }
 
     // For debug !!
-    content = <PlotResults />
+    // content = <ReactionResults />
     
 
     return (
