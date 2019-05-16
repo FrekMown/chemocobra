@@ -32,6 +32,32 @@ class App extends Component {
     this.setState({allModelIds, allMapIds});
   }
 
+  // Returns a metabolite object from the first occurence
+  getMetaboliteFromId(metaboliteId) {
+    let modelIds = this.state.allScens.map(scen=>scen.baseModelId);
+    modelIds = Array.from(new Set(modelIds));
+    let metaboliteOut = {};
+    modelIds.forEach(modelId => {
+      let model = this.getModel(modelId);
+      let metabolite = model.metabolites.filter(m=>m.id===metaboliteId);
+      if (metabolite.length>0) metaboliteOut = metabolite[0];
+    });
+    return metaboliteOut
+  }
+
+  // Returns a reaction object from the first occurence
+  getReactionFromId(reactId) {
+    let modelIds = this.state.allScens.map(scen=>scen.baseModelId);
+    modelIds = Array.from(new Set(modelIds));
+    let reactOut = {};
+    modelIds.forEach(modelId => {
+      let model = this.getModel(modelId);
+      let react = model.reactions.filter(r=>r.id===reactId);
+      if (react.length>0) reactOut = react[0];
+    });
+    return reactOut;
+  }
+
   // Returns sorted list of reactions in current models
   getReactionsIds() {
     let modelIds = this.state.allScens.map(scen=>scen.baseModelId);
@@ -136,6 +162,7 @@ class App extends Component {
       switchMainPage: this.switchMainPage.bind(this),
       getScen: this.getScen.bind(this),
       getReactionsIds: this.getReactionsIds.bind(this),
+      getReactionFromId: this.getReactionFromId.bind(this),
     }
 
     // Definition of main content

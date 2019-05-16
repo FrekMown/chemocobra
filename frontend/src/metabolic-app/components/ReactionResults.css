@@ -3,17 +3,17 @@
     display: flex;
     flex-direction: column;
     /* position: relative; */
-}
-#reaction-results-form {
     font-size: 0.6em;
-    /* height: 10% */
 }
-#reaction-results-plot {
-    margin: 0;
-    /* height: 90%; */
-    border: 1px solid black;
-    /* display: flex; */
-    /* flex: 1 1; */
+#reaction-results-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.4em;
+    margin-bottom: 4px;
+}
+#reaction-results-infos td{
+    padding-left: 4px;
+    font-size: 0.9em;
 }
 #reaction-results-form select {
     font-size: 0.9em;

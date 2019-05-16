@@ -64,7 +64,7 @@ body {
     padding: 2px;
 }
 
-#PlotResults {
+#ReactionResults {
     border: 2px solid darkred;
     background-color: whitesmoke;
     border-radius: 10px;
@@ -75,7 +75,7 @@ body {
 
 }
 
-#TableResults {
+#MetaboliteResults {
     border: 2px solid darkred;
     background-color: whitesmoke;
     border-radius: 10px;

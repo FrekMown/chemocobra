@@ -67,10 +67,15 @@ export default class ReactionResults extends Component {
     let styleInput = {}
     if (!this.state.correctFractOpt) styleInput = {backgroundColor: 'LightCoral'}
 
-    
+    // Reaction
+    let reaction = this.context.getReactionFromId(this.state.selReactionId);
+    console.log('reaction',reaction);
 
     return (
       <div id="ReactionResults">
+        <div id="reaction-results-title">
+          Reactions Analysis
+        </div>
         <div id="reaction-results-form">
           <label>
             Please choose a reaction:
@@ -80,7 +85,7 @@ export default class ReactionResults extends Component {
             >{reactionOptions}
             </select>
           </label>
-          <label>
+          {/* <label>
             Fraction of Optimum:
             <input
               type="text"
@@ -88,9 +93,29 @@ export default class ReactionResults extends Component {
               onChange={this.validateFractOpt.bind(this)}
               style={styleInput}
             />
-          </label>
+          </label> */}
         </div>
-        <div id="reaction-results-plot">
+        <div id="reaction-results-infos">
+          <table>
+            <tbody>
+              <tr>
+                <th>Name:</th>
+                <td>{reaction.name}</td>
+              </tr>
+              <tr>
+                <th>Bounds:</th>
+                <td>{reaction.lower_bound} / {reaction.upper_bound}</td>
+              </tr>
+              <tr>
+                <th>Genes:</th>
+                <td>{reaction.gene_reaction_rule}</td>
+              </tr>
+              <tr>
+                <th>Reaction:</th>
+                <td>{reaction.reactionString}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     );
