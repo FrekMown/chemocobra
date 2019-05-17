@@ -115,7 +115,7 @@ export default class ModelTable extends Component {
           { Header: 'ID', accessor: 'id', width: 80, style: { fontWeight: 'bold' } },
           { Header: 'Name', accessor: 'name' },
           { Header: 'Reaction', accessor: 'reactionString' },
-          { Header: 'Genes', accessor: 'gene_reaction_rule' },
+          { Header: 'Genes', accessor: 'genes_names' },
         ]
       },
       {

@@ -32,6 +32,21 @@ class App extends Component {
     this.setState({allModelIds, allMapIds});
   }
 
+  // Returns sorted list of metabolites in current models
+  getMetaboliteIds() {
+    let modelIds = this.state.allScens.map(scen=>scen.baseModelId);
+    modelIds = Array.from(new Set(modelIds));
+    let metabolites = [];
+    modelIds.forEach(modelId => {
+      let model = this.getModel(modelId)
+      let metabolitesModel = model.metabolites.map(m=>m.id);
+      metabolites = metabolites.concat(metabolitesModel);
+    });
+    metabolites = Array.from(new Set(metabolites));
+    metabolites.sort();
+    return metabolites;
+  }
+
   // Returns a metabolite object from the first occurence
   getMetaboliteFromId(metaboliteId) {
     let modelIds = this.state.allScens.map(scen=>scen.baseModelId);
@@ -163,6 +178,8 @@ class App extends Component {
       getScen: this.getScen.bind(this),
       getReactionsIds: this.getReactionsIds.bind(this),
       getReactionFromId: this.getReactionFromId.bind(this),
+      getMetaboliteIds: this.getMetaboliteIds.bind(this),
+      getMetaboliteFromId: this.getMetaboliteFromId.bind(this),
     }
 
     // Definition of main content

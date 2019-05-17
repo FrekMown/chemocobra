@@ -12,6 +12,7 @@ export default class ReactionResults extends Component {
       correctFractOpt: true,
       inputfractOptimum: '0.9',
       traceFVA: [],
+      tab: 'info', //can be either info or FVA
     }
     this.plotlyRef = React.createRef();
   }
@@ -30,12 +31,12 @@ export default class ReactionResults extends Component {
         this.state.fractOptimum,
         this.context.respfba,
         );
-      console.log('traceFVA',traceFVA);
+      // console.log('traceFVA',traceFVA);
       this.setState({traceFVA});
     }
     // For plotly
     if (this.plotlyRef.current !== undefined && this.plotlyRef.current !== null) {
-      console.log('plotylRef',this.plotlyRef)
+      // console.log('plotylRef',this.plotlyRef)
       this.plotlyRef.current.resizeHandler();
     }
   }
@@ -56,6 +57,10 @@ export default class ReactionResults extends Component {
     this.setState({selReactionId: e.target.value});    
   }
 
+  handleChangeTab(e) {
+    this.setState({tab: e.target.value});
+  }
+
   render() {
     // Creation of reaction options
     let reactionsList = ['None'].concat(this.context.getReactionsIds());
@@ -64,12 +69,43 @@ export default class ReactionResults extends Component {
     ));
 
     // red background if fract optimum not valid
-    let styleInput = {}
-    if (!this.state.correctFractOpt) styleInput = {backgroundColor: 'LightCoral'}
+    // let styleInput = {}
+    // if (!this.state.correctFractOpt) styleInput = {backgroundColor: 'LightCoral'}
 
     // Reaction
     let reaction = this.context.getReactionFromId(this.state.selReactionId);
-    console.log('reaction',reaction);
+
+    // definition of main content depending on page
+    let content;
+    if (this.state.tab === "info") {
+      content = (
+        <table>
+          <tbody>
+            <tr>
+              <th>Name:</th>
+              <td>{reaction.name}</td>
+            </tr>
+            <tr>
+              <th>Bounds:</th>
+              <td>{reaction.lower_bound} / {reaction.upper_bound}</td>
+            </tr>
+            <tr>
+              <th>Genes:</th>
+              <td>{reaction.gene_reaction_rule}</td>
+            </tr>
+            <tr>
+              <th>Reaction:</th>
+              <td>{reaction.reactionString}</td>
+            </tr>
+          </tbody>
+        </table>
+      );
+    }
+    else if (this.state.tab === "FVA") {
+      content = (
+        <h4>FVA plot here</h4>
+      )
+    }
 
     return (
       <div id="ReactionResults">
@@ -95,27 +131,12 @@ export default class ReactionResults extends Component {
             />
           </label> */}
         </div>
+        <div id="reaction-results-radio" onChange={this.handleChangeTab.bind(this)}>
+          <input type="radio" value="info" name="radio" defaultChecked={true}/> Infos
+          <input type="radio" value="FVA" name="radio"/> FVA
+        </div>
         <div id="reaction-results-infos">
-          <table>
-            <tbody>
-              <tr>
-                <th>Name:</th>
-                <td>{reaction.name}</td>
-              </tr>
-              <tr>
-                <th>Bounds:</th>
-                <td>{reaction.lower_bound} / {reaction.upper_bound}</td>
-              </tr>
-              <tr>
-                <th>Genes:</th>
-                <td>{reaction.gene_reaction_rule}</td>
-              </tr>
-              <tr>
-                <th>Reaction:</th>
-                <td>{reaction.reactionString}</td>
-              </tr>
-            </tbody>
-          </table>
+          {content}
         </div>
       </div>
     );
