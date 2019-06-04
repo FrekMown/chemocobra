@@ -26,11 +26,6 @@ class ModelDescription extends Component {
   // Lifecycle Compontents
   // **************************************
 
-  componentWillMount() {
-    // Load initial
-    
-  }
-
   // **************************************
   // Functions 
   // **************************************

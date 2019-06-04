@@ -3,6 +3,7 @@ from chemocobra.settings import STATIC_DIR
 import os
 import numpy as np
 
+
 def get_scen_from_request(request):
     baseModelId = request.query_params.get('baseModelId')
     objective = request.query_params.get('objective')

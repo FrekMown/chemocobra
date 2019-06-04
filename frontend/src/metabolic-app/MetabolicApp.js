@@ -31,6 +31,22 @@ class App extends Component {
     let allMapIds = await apiCalls.getAvailableMaps();
     this.setState({allModelIds, allMapIds});
   }
+  // returns list of objects, each for one scen, containing scenId and all reactions
+  // thr --> sum of absolute values to keep. To be implemented.
+  getMetaboliteBalance(metId, thr) {
+    let metaboliteBalance = this.state.allScens.map(scen => {
+      let metBalScen = {scenId: scen.id};
+      let model = this.getModel(scen.baseModelId);
+      model.reactions.forEach(r => {
+        if (metId in r.metabolites && r.id in this.state.respfba[scen.id]) {
+          let flux = r.metabolites[metId]*this.state.respfba[scen.id][r.id];
+          metBalScen[r.id] = flux;
+        }
+      return metBalScen
+      });
+    });
+    return metaboliteBalance;
+  }
 
   // Returns sorted list of metabolites in current models
   getMetaboliteIds() {
@@ -180,6 +196,7 @@ class App extends Component {
       getReactionFromId: this.getReactionFromId.bind(this),
       getMetaboliteIds: this.getMetaboliteIds.bind(this),
       getMetaboliteFromId: this.getMetaboliteFromId.bind(this),
+      getMetaboliteBalance: this.getMetaboliteBalance.bind(this),
     }
 
     // Definition of main content

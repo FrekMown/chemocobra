@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './MetaboliteResults.css';
 import AppContext from '../app-context';
 import SmilesDrawer from 'smiles-drawer';
+import ReactTable from 'react-table';
 
 export default class MetaboliteResults extends Component {
   constructor(props) {
@@ -26,7 +27,7 @@ export default class MetaboliteResults extends Component {
     this.setState({selMetaboliteId: e.target.value});
   }
 
-
+  
   render() {
     // Creation of metabolite options
     let metaboliteList = ['None'].concat(this.context.getMetaboliteIds());
@@ -48,7 +49,6 @@ export default class MetaboliteResults extends Component {
         height: 300,
       }
       let smilesDrawer = new SmilesDrawer.Drawer(structOptions);
-      console.log('smilesDrawer',smilesDrawer);
       if('smiles' in metabolite && metabolite.smiles.length>1) {
         SmilesDrawer.parse(metabolite.smiles, function(tree) {
           smilesDrawer.draw(tree, 'metabolite-results-structure-canvas')
@@ -77,8 +77,26 @@ export default class MetaboliteResults extends Component {
     }
     else if (this.state.tab === 'balance') {
       styleCanvasStruct = {display: 'none'};
+      let data = {};
+      if (this.state.selMetaboliteId!=="None") {
+        let data = this.context.getMetaboliteBalance(this.context.selMetaboliteId,0);
+      }
+      let columns = [
+        {
+          Header: 'Reactions',
+          columns: [
+            { Header: 'ID', accessor: }
+          ]
+        }
+        {
+          Header: 'Scenarios',
+          columns: this.context.allScens.map(scen => ({
+            Header: scen.id
+          }));
+        }
+      ]
       content = (
-        <h4>Metabolite Balance here</h4>
+        <h4></h4>
       )
     }
 
