@@ -76,27 +76,27 @@ export default class MetaboliteResults extends Component {
       );
     }
     else if (this.state.tab === 'balance') {
-      styleCanvasStruct = {display: 'none'};
-      let data = {};
-      if (this.state.selMetaboliteId!=="None") {
-        let data = this.context.getMetaboliteBalance(this.context.selMetaboliteId,0);
-      }
-      let columns = [
-        {
-          Header: 'Reactions',
-          columns: [
-            { Header: 'ID', accessor: }
-          ]
-        }
-        {
-          Header: 'Scenarios',
-          columns: this.context.allScens.map(scen => ({
-            Header: scen.id
-          }));
-        }
-      ]
+      // styleCanvasStruct = {display: 'none'};
+      // let data = {};
+      // if (this.state.selMetaboliteId!=="None") {
+      //   let data = this.context.getMetaboliteBalance(this.context.selMetaboliteId,0);
+      // }
+      // let columns = [
+      //   {
+      //     Header: 'Reactions',
+      //     columns: [
+      //       { Header: 'ID', accessor: }
+      //     ]
+      //   }
+      //   {
+      //     Header: 'Scenarios',
+      //     columns: this.context.allScens.map(scen => ({
+      //       Header: scen.id
+      //     }));
+      //   }
+      // ]
       content = (
-        <h4></h4>
+        <h4>Balance Here</h4>
       )
     }
 

@@ -1,9 +1,11 @@
 from rest_framework.views import APIView
+from django.views.generic import View
 from rest_framework.response import Response
-from chemocobra.settings import STATIC_DIR
+from chemocobra.settings import STATIC_DIR, FRONTEND_DIR
 import os
 import json
 import api.metabolic_functions as met_funcs
+from django.http import HttpResponse
 
 class RunpFBA(APIView):
     """
@@ -69,3 +71,15 @@ class GetMap(APIView):
         map_out[0]['map_name'] = map_id
         map_out[0]['map_id'] = map_id
         return Response(map_out)
+
+
+class MetabolicAppView(View):
+    """
+    Serves the compiled frontend entry point.
+    """
+    def get(self,request):
+        try:
+            with open(os.path.join(FRONTEND_DIR,'build','index.html')) as f:
+                return HttpResponse(f.read())
+        except FileNotFoundError:
+            return HttpResponse('index.html in build not found', status=501)

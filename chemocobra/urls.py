@@ -12,6 +12,7 @@ metabolic_urls = [
 ]
 
 urlpatterns = [
+    path('', metabolic_views.MetabolicAppView.as_view(),name='metabolic_app'),
     path('admin/', admin.site.urls),
     path('metabolic/', include(metabolic_urls))
 ]
