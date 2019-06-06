@@ -31,21 +31,48 @@ class App extends Component {
     let allMapIds = await apiCalls.getAvailableMaps();
     this.setState({allModelIds, allMapIds});
   }
-  // returns list of objects, each for one scen, containing scenId and all reactions
+
   // thr --> sum of absolute values to keep. To be implemented.
   getMetaboliteBalance(metId, thr) {
-    let metaboliteBalance = this.state.allScens.map(scen => {
-      let metBalScen = {scenId: scen.id};
+    // metBalAllScens ==> list of objects, each for one scen, containing scenId and all reactions
+    let reactsTotalFlux = {};
+    let metBalAllScens = {};
+    for (let scen of this.state.allScens) {
+      metBalAllScens[scen.id] = {};
       let model = this.getModel(scen.baseModelId);
       model.reactions.forEach(r => {
         if (metId in r.metabolites && r.id in this.state.respfba[scen.id]) {
           let flux = r.metabolites[metId]*this.state.respfba[scen.id][r.id];
-          metBalScen[r.id] = flux;
+          metBalAllScens[scen.id][r.id] = +flux.toFixed(2);
+          // add this reaction to reactsTotalFlux
+          if (r.id in reactsTotalFlux) reactsTotalFlux[r.id] += Math.abs(metBalAllScens[scen.id][r.id]);
+          else reactsTotalFlux[r.id] = Math.abs(metBalAllScens[scen.id][r.id]);          
         }
-      return metBalScen
       });
-    });
-    return metaboliteBalance;
+    }
+
+    // console.log('metBalAllScens', metBalAllScens);
+
+    // Select reactions ok
+    let reactsOK = Object.keys(reactsTotalFlux).sort((x,y)=>reactsTotalFlux[y]-reactsTotalFlux[x]).filter(rId => (
+      (reactsTotalFlux[rId]>=thr)
+    ));
+
+    console.log('reactsOK', reactsOK);
+
+    // metBalReacts ==> list of objects, one for reaction, if sum abs >= thr
+    let metBalReacts = reactsOK.map(rId => {
+      let metBalR = {reactId: rId}
+      for (let scen of this.state.allScens) {
+        if (rId in metBalAllScens[scen.id]) metBalR[scen.id] = metBalAllScens[scen.id][rId];
+        else metBalR[scen.id] = 0;
+      }
+      return metBalR;
+    })
+
+    return metBalReacts;
+
+    // return metaboliteBalance;
   }
 
   // Returns sorted list of metabolites in current models

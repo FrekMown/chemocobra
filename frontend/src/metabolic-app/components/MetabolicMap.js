@@ -65,6 +65,10 @@ export default class MetabolicMap extends Component {
     let escherOptions = {
       never_ask_before_quit: true,
       reaction_style: ['color', 'size', 'text', 'abs'],
+      reaction_scale: [
+        {type:'min', color:'#c8c8c8', size:12},
+        {type:'max', color:'#66176d', size:20}
+      ]
     };
     if (this.state.selMap.length>0) {
       // Create escher builder

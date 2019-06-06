@@ -77,27 +77,31 @@ export default class MetaboliteResults extends Component {
     }
     else if (this.state.tab === 'balance') {
       // styleCanvasStruct = {display: 'none'};
-      // let data = {};
-      // if (this.state.selMetaboliteId!=="None") {
-      //   let data = this.context.getMetaboliteBalance(this.context.selMetaboliteId,0);
-      // }
-      // let columns = [
-      //   {
-      //     Header: 'Reactions',
-      //     columns: [
-      //       { Header: 'ID', accessor: }
-      //     ]
-      //   }
-      //   {
-      //     Header: 'Scenarios',
-      //     columns: this.context.allScens.map(scen => ({
-      //       Header: scen.id
-      //     }));
-      //   }
-      // ]
+      let data = {};
+      if (this.state.selMetaboliteId!=="None") {
+        data = this.context.getMetaboliteBalance(this.state.selMetaboliteId,0);
+      }
+      console.log('metaboliteBaldata', data)
+      let columns = [
+        {
+          Header: 'Reactions',
+          columns: [
+            { Header: 'ID', accessor: 'reactId'}
+          ]
+        },{
+          Header: 'Scenarios',
+          columns: this.context.allScens.map(scen => (
+            { Header: scen.id, accessor: scen.id }))
+        }
+      ]
       content = (
-        <h4>Balance Here</h4>
-      )
+        // <h4>Balance Here</h4>
+        <ReactTable 
+          data={data} 
+          columns={columns} 
+          defaultPageSize={15}  
+        />
+      );
     }
 
     
@@ -124,9 +128,7 @@ export default class MetaboliteResults extends Component {
         <div id="metabolite-results-content">
           {content}
         </div>
-        <div id="metabolite-results-structure" 
-          style={styleCanvasStruct}
-        >
+        <div id="metabolite-results-structure" style={styleCanvasStruct}>
           <canvas id="metabolite-results-structure-canvas">
           </canvas>
         </div>
