@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './MetaboliteResults.css';
 import AppContext from '../app-context';
 import SmilesDrawer from 'smiles-drawer';
-import ReactTable from 'react-table';
+import { JsonToTable } from "react-json-to-table";
 
 export default class MetaboliteResults extends Component {
   constructor(props) {
@@ -13,7 +13,6 @@ export default class MetaboliteResults extends Component {
     }
   }
   static contextType = AppContext;
-
 
   handleChangeTab(e) {
     this.setState({tab: e.target.value});
@@ -82,25 +81,9 @@ export default class MetaboliteResults extends Component {
         data = this.context.getMetaboliteBalance(this.state.selMetaboliteId,0);
       }
       console.log('metaboliteBaldata', data)
-      let columns = [
-        {
-          Header: 'Reactions',
-          columns: [
-            { Header: 'ID', accessor: 'reactId'}
-          ]
-        },{
-          Header: 'Scenarios',
-          columns: this.context.allScens.map(scen => (
-            { Header: scen.id, accessor: scen.id }))
-        }
-      ]
+
       content = (
-        // <h4>Balance Here</h4>
-        <ReactTable 
-          data={data} 
-          columns={columns} 
-          defaultPageSize={15}  
-        />
+        <JsonToTable json={data} className="json-table"/>
       );
     }
 

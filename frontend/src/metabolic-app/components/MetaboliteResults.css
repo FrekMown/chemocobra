@@ -16,6 +16,13 @@
     font-size: 0.9em;
     /* margin: 4px; */
 }
+
+#json-table {
+    font-size: 0.8em;
+    padding: 0;
+    overflow: scroll;
+    
+}
 #metabolite-results-form select {
     font-size: 0.9em;
     font-weight: bold;

@@ -8101,7 +8101,7 @@ react-dev-utils@^8.0.0:
     strip-ansi "5.0.0"
     text-table "0.2.0"
 
-react-dom@^16.8.6:
+react-dom@^16.7.0, react-dom@^16.8.6:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.8.6.tgz#71d6303f631e8b0097f56165ef608f051ff6e10f"
   integrity sha512-1nL7PIq9LTL3fthPqwkvr2zY7phIPjYrT0jp4HjyEQrEROnw4dG41VVwi/wfoCneoleqrNX7iAD+pXebJZwrwA==
@@ -8120,6 +8120,14 @@ react-is@^16.8.1:
   version "16.8.4"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.4.tgz#90f336a68c3a29a096a3d648ab80e87ec61482a2"
   integrity sha512-PVadd+WaUDOAciICm/J1waJaSvgq+4rHE/K70j0PFqKhkTBsPv/82UGQJNXAngz1fOQLLxI6z1sEDmJDQhCTAA==
+
+react-json-to-table@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/react-json-to-table/-/react-json-to-table-0.1.5.tgz#85aa237b9ee111a0d8f770ed8e9d20bbd4b1dd1a"
+  integrity sha512-86QVW8HcMMC8S7z5q5rN3BBMap6U8XYugSzJaRGzT7eXxa62v5CQZe+EX9JMaghQsl47fvfJRTjfXYTRmFGehA==
+  dependencies:
+    react "^16.7.0"
+    react-dom "^16.7.0"
 
 react-scripts@2.1.8:
   version "2.1.8"
@@ -8182,7 +8190,7 @@ react-table@^6.9.2:
   dependencies:
     classnames "^2.2.5"
 
-react@^16.8.6:
+react@^16.7.0, react@^16.8.6:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react/-/react-16.8.6.tgz#ad6c3a9614fd3a4e9ef51117f54d888da01f2bbe"
   integrity sha512-pC0uMkhLaHm11ZSJULfOBqV4tIZkx87ZLvbbQYunNixAAvjnC+snJCg0XQXn9VIsttVsbZP/H/ewzgsd5fxKXw==

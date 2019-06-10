@@ -41,7 +41,7 @@ class ModelDescription extends Component {
   }
   async handleChangeBaseModelId(e) {
     this.setState({ newScenBaseModelId: e.target.value });
-    this.context.loadModel(e.target.value);
+    if (e.target.value !== "noModel") this.context.loadModel(e.target.value);
   }
   handleObjectiveChange(e) {
     let newScenObjectiveId = e.target.value;
