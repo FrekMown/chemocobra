@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './ReactionResults.css';
 import AppContext from '../app-context';
 import * as apiCalls from '../api-calls';
+import { JsonToTable } from 'react-json-to-table';
 
 export default class ReactionResults extends Component {
   constructor(props) {
@@ -11,34 +12,33 @@ export default class ReactionResults extends Component {
       fractOptimum: 0.9,
       correctFractOpt: true,
       inputfractOptimum: '0.9',
-      traceFVA: [],
+      dataFVA: {},
       tab: 'info', //can be either info or FVA
     }
-    this.plotlyRef = React.createRef();
   }
   static contextType = AppContext;
 
 
   async componentDidUpdate(_,prevState) {
-    let changeFVA = (prevState.selReactionId !== this.state.selReactionId) ||
-      (prevState.fractOptimum !== this.state.fractOptimum);
-    changeFVA = changeFVA && this.state.selReactionId !== "None";
+    // let changeFVA =  ||
+    //   (prevState.fractOptimum !== this.state.fractOptimum) ;
+    // changeFVA = changeFVA && this.state.selReactionId !== "None";
+    // if(changeFVA) this.runFVASelReaction();
+    if (prevState.selReactionId !== this.state.selReactionId && this.state.selReactionId !== "None") {
+      this.runFVASelReaction();
+    }
+  }
+  
+  async runFVASelReaction() {
+    let resFVA = await apiCalls.runFVAforReaction(
+      this.state.selReactionId, 
+      this.context.allScens,
+      this.context.respfba,
+      0.9);
+    console.log('resFVA', resFVA);
     
-    if(changeFVA) {
-      let traceFVA = await apiCalls.getTracePlotlyFVA(
-        this.state.selReactionId,
-        this.context.allScens,
-        this.state.fractOptimum,
-        this.context.respfba,
-        );
-      // console.log('traceFVA',traceFVA);
-      this.setState({traceFVA});
-    }
-    // For plotly
-    if (this.plotlyRef.current !== undefined && this.plotlyRef.current !== null) {
-      // console.log('plotylRef',this.plotlyRef)
-      this.plotlyRef.current.resizeHandler();
-    }
+    this.setState({dataFVA: resFVA})
+
   }
 
   validateFractOpt(e) {
@@ -79,31 +79,37 @@ export default class ReactionResults extends Component {
     let content;
     if (this.state.tab === "info") {
       content = (
-        <table>
-          <tbody>
-            <tr>
-              <th>Name:</th>
-              <td>{reaction.name}</td>
-            </tr>
-            <tr>
-              <th>Bounds:</th>
-              <td>{reaction.lower_bound} / {reaction.upper_bound}</td>
-            </tr>
-            <tr>
-              <th>Genes:</th>
-              <td>{reaction.gene_reaction_rule}</td>
-            </tr>
-            <tr>
-              <th>Reaction:</th>
-              <td>{reaction.reactionString}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div id="reaction-infos-table">
+          <table>
+            <tbody>
+              <tr>
+                <th>Name:</th>
+                <td>{reaction.name}</td>
+              </tr>
+              <tr>
+                <th>Bounds:</th>
+                <td>{reaction.lower_bound} / {reaction.upper_bound}</td>
+              </tr>
+              <tr>
+                <th>Genes:</th>
+                <td>{reaction.gene_reaction_rule}</td>
+              </tr>
+              <tr>
+                <th>Reaction:</th>
+                <td>{reaction.reactionString}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       );
     }
     else if (this.state.tab === "FVA") {
+      
       content = (
-        <h4>FVA plot here</h4>
+        // <h4>FVA plot here</h4>
+        <div id='reaction-json-table'>
+          <JsonToTable json={this.state.dataFVA} id="reaction-json-table" />
+        </div>
       )
     }
 
@@ -114,7 +120,7 @@ export default class ReactionResults extends Component {
         </div>
         <div id="reaction-results-form">
           <label>
-            Please choose a reaction:
+            Reaction? 
             <select 
               value={this.state.selReactionId}
               onChange={this.handleReactionChange.bind(this)}
