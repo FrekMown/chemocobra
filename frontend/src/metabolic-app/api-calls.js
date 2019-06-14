@@ -1,33 +1,25 @@
 
-export async function getTracePlotlyFVA(reactId,allScens,fractionOptimum, respfba) {
-  let resFVA = await runFVAforReaction(reactId,allScens,fractionOptimum);
-  let trace = {
-    x: allScens.map(scen=>respfba[scen.id][reactId] || 0),
-    y: allScens.map(scen=>scen.id),
-    error_x: {
-      type: 'data',
-      symmetric: false,
-      array: resFVA.map(res => res[0]),
-      arrayminus: resFVA.map(res=>res[1])
-    },
-    type: 'scatter',
-    mode: 'markers',
-    marker: { size: 12 },
-  }
-  return [trace];
-}
-
-
 // Runs FVA for a specific reaction given a list of scenarios
-async function runFVAforReaction(reactId, allScens, fractionOptimum) {
+export async function runFVAforReaction(reactId, allScens, respfba, fractionOptimum) {
   let promises = allScens.map((scen) => (
     fetch(`metabolic/run_fva/?${scenAsParams(scen)}&reactId=${reactId}&fractionOpt=${fractionOptimum}`)
       .then(response=>response.json())
       .catch(response=>console.log(response))
     ));
   let result = await Promise.all(promises)
-    
-  return result;
+  console.log('result1', result);
+
+  let result2 = result.map((res,counter) => (
+    {
+      scen: allScens[counter].id, 
+      min: res.min.toFixed(3)|| 0, 
+      pFBA: respfba[allScens[counter].id][reactId] || 0,
+      max: res.max.toFixed(3)|| 0
+    }
+  ));
+
+  console.log('result2', result);
+  return result2;
 }
 
 // Get available maps and models

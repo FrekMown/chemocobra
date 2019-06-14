@@ -58,11 +58,10 @@ class App extends Component {
       (reactsTotalFlux[rId]>=thr)
     ));
 
-    console.log('reactsOK', reactsOK);
-
     // metBalReacts ==> list of objects, one for reaction, if sum abs >= thr
     let metBalReacts = reactsOK.map(rId => {
-      let metBalR = {reactId: rId}
+      let reaction = (rId.length<20 ? rId : rId.slice(0,20)+'...')
+      let metBalR = {reaction}
       for (let scen of this.state.allScens) {
         if (rId in metBalAllScens[scen.id]) metBalR[scen.id] = metBalAllScens[scen.id][rId];
         else metBalR[scen.id] = 0;

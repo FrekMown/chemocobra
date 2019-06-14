@@ -3,20 +3,38 @@
     display: flex;
     flex-direction: column;
     /* position: relative; */
-    font-size: 0.7em;
+    font-size: 0.8em;
 }
 #reaction-results-title {
     text-align: center;
     font-weight: bold;
-    font-size: 1.4em;
+    font-size: 1.2em;
     margin: 10px;
 }
-#reaction-results-infos td{
+#ReactionResults .json-to-table tr:first-child td {
+    font-weight: bold;
+    text-align: center;
+}
+#ReactionResults .json-to-table td:first-child {
+    font-weight: bold;    
+}
+
+#ReactionResults .json-to-table td{
+    font-size: 1.2em;
+}
+
+
+
+
+/* td:first-child {
+    font-weight: bold;
+} */
+#reaction-infos-table tr td,th{
     padding-left: 4px;
-    font-size: 0.9em;
+    font-size: 1em;
 }
 #reaction-results-form select {
-    font-size: 0.9em;
+    font-size: 0.75em;
     font-weight: bold;
 }
 #reaction-results-form input {

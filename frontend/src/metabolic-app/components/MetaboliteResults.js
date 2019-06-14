@@ -9,7 +9,7 @@ export default class MetaboliteResults extends Component {
     super(props);
     this.state = {
       selMetaboliteId: 'None',
-      tab: 'info', // can be either info or balance
+      tab: 'structure', // can be either info, balance or structure
     }
   }
   static contextType = AppContext;
@@ -41,6 +41,40 @@ export default class MetaboliteResults extends Component {
     let content;
     let styleCanvasStruct = {}
     if (this.state.tab === 'info') {
+      content = (
+        <div id="metabolite-infos-table">
+          <table>
+            <tbody>
+              <tr>
+                <th>Name:</th>
+                <td>{metabolite.name}</td>
+              </tr>
+              <tr>
+                <th>Formula:</th>
+                <td>{metabolite.formula}</td>
+              </tr>
+              <tr>
+                <th>MetaNetX:</th>
+                <td onClick={_ => this.handleClickMNX(metabolite.MNX)}>{metabolite.MNX}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      );
+    }
+    else if (this.state.tab === 'balance') {
+      styleCanvasStruct = {display: 'none'};
+      let metBal = {};
+      if (this.state.selMetaboliteId!=="None") {
+        metBal = this.context.getMetaboliteBalance(this.state.selMetaboliteId,0);
+      }
+      
+      content = (
+        <JsonToTable json={metBal} key="json-table" id="metabolite-json-table"/>
+      );
+    }
+
+    else if (this.state.tab === 'structure') {
       // Plot metabolite structure if SMILES available
       let structOptions = {
         padding: 10,
@@ -56,34 +90,9 @@ export default class MetaboliteResults extends Component {
         })
       }
       content = (
-        <table>
-          <tbody>
-            <tr>
-              <th>Name:</th>
-              <td>{metabolite.name}</td>
-            </tr>
-            <tr>
-              <th>Formula:</th>
-              <td>{metabolite.formula}</td>
-            </tr>
-            <tr>
-              <th>MetaNetX:</th>
-              <td onClick={_ => this.handleClickMNX(metabolite.MNX)}>{metabolite.MNX}</td>
-            </tr>
-          </tbody>
-        </table>
-      );
-    }
-    else if (this.state.tab === 'balance') {
-      // styleCanvasStruct = {display: 'none'};
-      let data = {};
-      if (this.state.selMetaboliteId!=="None") {
-        data = this.context.getMetaboliteBalance(this.state.selMetaboliteId,0);
-      }
-      console.log('metaboliteBaldata', data)
-
-      content = (
-        <JsonToTable json={data} className="json-table"/>
+        <div id="metabolite-results-structure" style={styleCanvasStruct}>
+          <canvas id="metabolite-results-structure-canvas" />
+        </div>
       );
     }
 
@@ -96,7 +105,7 @@ export default class MetaboliteResults extends Component {
         </div>
         <div id="metabolite-results-form">
           <label>
-            Please choose a metabolite:
+            Metabolite? :
             <select
               value={this.state.selMetaboliteId}
               onChange={this.handleMetaboliteChange.bind(this)}
@@ -105,16 +114,14 @@ export default class MetaboliteResults extends Component {
           </label>
         </div>
         <div id="metabolite-results-radio" onChange={this.handleChangeTab.bind(this)}>
-          <input type="radio" value="info" name="metabolite-radio" defaultChecked={true}/> Infos
+          <input type="radio" value="info" name="metabolite-radio" /> Infos
+          <input type="radio" value="structure" name="metabolite-radio" defaultChecked={true}/> Structure
           <input type="radio" value="balance" name="metabolite-radio"/> Balance
         </div>
         <div id="metabolite-results-content">
           {content}
         </div>
-        <div id="metabolite-results-structure" style={styleCanvasStruct}>
-          <canvas id="metabolite-results-structure-canvas">
-          </canvas>
-        </div>
+        
       </div>
     );
   }
