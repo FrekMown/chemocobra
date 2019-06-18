@@ -15,7 +15,6 @@
 #metabolite-infos-table tr td{
     padding-left: 8px;
     font-size: 1em;
-    /* margin: 4px; */
 }
 
 #metabolite-json-table td:first-child {
@@ -43,6 +42,7 @@
 
 #metabolite-results-content {
     overflow: scroll;
+    flex-grow: 1;
 }
 
 #MetaboliteResults .json-to-table tr:first-child td {

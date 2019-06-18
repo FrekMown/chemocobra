@@ -11,11 +11,63 @@ export default class MetabolicMap extends Component {
     super(props);
     this.state = {
       selMapId: 'None',
-      selMap: [],
+      selMap: null,
     }
     this.escherRef = React.createRef();
   } 
   static contextType = AppContext;
+
+  componentDidMount() {
+    this.loadEscher();
+  }
+
+  componentDidUpdate(_, prevState) {
+    let mapChanged = this.state.selMapId !== prevState.selMapId;
+    if (mapChanged) {
+      this.loadEscher();
+    }
+  } 
+
+  loadEscher() {
+    // Model
+    let scen = this.context.getSelScen();
+    let model = this.context.getModel(scen.baseModelId);
+
+    // Create dictionary with data for escher
+    let reactionData = {}
+    for (let reaction of model.reactions) {
+      if (reaction.id in this.context.respfba[this.context.selScenId]) {
+        reactionData[reaction.id] = this.context.respfba[this.context.selScenId][reaction.id];
+      }
+      else {
+        reactionData[reaction.id] = 0;
+      }
+    }
+
+    let escherOptions = {
+      never_ask_before_quit: true,
+      reaction_style: ['color', 'size', 'text', 'abs'],
+      reaction_scale: [
+        {type:'min', color:'#c8c8c8', size:12},
+        {type:'max', color:'#66176d', size:20}
+      ]
+    };
+
+    if (this.escherRef.current !== null) {
+      // Create escher builder
+      let escherBuilder = escher.Builder(
+        this.state.selMap, // map_data
+        model, // model_data
+        null, // embedded_css
+        this.escherRef.current, // selection
+        escherOptions, // options
+      );
+
+      escherBuilder.set_reaction_data([reactionData])
+
+    }
+  }
+
 
   async handleMapChange(e) {
     let selMapId = e.target.value
@@ -24,6 +76,7 @@ export default class MetabolicMap extends Component {
       selMap = await apiCalls.getMapFromId(selMapId);
       
     }
+    else selMap = null;
     this.setState({selMapId, selMap});
   }
 
@@ -45,45 +98,6 @@ export default class MetabolicMap extends Component {
     let scenOptions = this.context.allScens.map(scen => (
       <option key={scen.id}>{scen.id}</option>
     ));
-
-    // Model
-    let scen = this.context.getSelScen();
-    let model = this.context.getModel(scen.baseModelId);
-
-    // Create dictionary with data for escher
-    let reactionData = {}
-    for (let reaction of model.reactions) {
-      if (reaction.id in this.context.respfba[this.context.selScenId]) {
-        reactionData[reaction.id] = this.context.respfba[this.context.selScenId][reaction.id];
-      }
-      else {
-        reactionData[reaction.id] = 0;
-      }
-    }
-
-    // Escher
-    let escherOptions = {
-      never_ask_before_quit: true,
-      reaction_style: ['color', 'size', 'text', 'abs'],
-      reaction_scale: [
-        {type:'min', color:'#c8c8c8', size:12},
-        {type:'max', color:'#66176d', size:20}
-      ]
-    };
-    if (this.state.selMap.length>0) {
-      // Create escher builder
-      let escherBuilder = escher.Builder(
-        this.state.selMap, // map_data
-        model, // model_data
-        null, // embedded_css
-        this.escherRef.current, // selection
-        escherOptions, // options
-      );
-
-      escherBuilder.set_reaction_data([reactionData])
-      
-      // escherBuilder.view_mode();
-    }
 
     return (
       <div id="MetabolicMap">

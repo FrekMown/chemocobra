@@ -6,6 +6,8 @@ import os
 import json
 import api.metabolic_functions as met_funcs
 from django.http import HttpResponse
+from rdkit.Chem import MolFromSmiles
+import pandas as pd
 
 class RunpFBA(APIView):
     """
@@ -57,6 +59,13 @@ class GetModel(APIView):
         with open(os.path.join(model_path)) as f:
             model = json.load(f)
         model['id'] = model_id
+        ## Add SMILES to metabolites
+        struct_data = pd.read_csv(os.path.join(STATIC_DIR, 'chemoinfo', 'smiles_database.csv'), index_col=0)['smiles']
+        for m in model['metabolites']:
+            m_id = '_'.join(m['id'].split('_')[:-1])
+            if m_id in struct_data.index:
+                m['smiles'] = struct_data.loc[m_id].replace('/','')
+                print(m_id,m['smiles'])
         return Response(model)
 
 class GetMap(APIView):
