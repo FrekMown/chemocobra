@@ -18,7 +18,6 @@ export default class MetaboliteResults extends Component {
   async componentDidUpdate(_,prevState) {
     // get structure image as svg
     let metChanged = this.state.selMetaboliteId !== prevState.selMetaboliteId;
-    console.log(metChanged);
     if (metChanged && this.state.selMetaboliteId !== 'None' && this.state.metabolite !== {}) {
       let imgURL = `chemo/get_svg_metabolite/${this.state.metabolite.id}`;
       let structSVG = await fetch(imgURL).then(response=>response.text());
