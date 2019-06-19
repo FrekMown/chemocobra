@@ -60,12 +60,11 @@ class GetModel(APIView):
             model = json.load(f)
         model['id'] = model_id
         ## Add SMILES to metabolites
-        struct_data = pd.read_csv(os.path.join(STATIC_DIR, 'chemoinfo', 'smiles_database.csv'), index_col=0)['smiles']
-        for m in model['metabolites']:
-            m_id = '_'.join(m['id'].split('_')[:-1])
-            if m_id in struct_data.index:
-                m['smiles'] = struct_data.loc[m_id].replace('/','')
-                print(m_id,m['smiles'])
+        # struct_data = pd.read_csv(os.path.join(STATIC_DIR, 'chemoinfo', 'smiles_database.csv'), index_col=0)['smiles']
+        # for m in model['metabolites']:
+        #     m_id = '_'.join(m['id'].split('_')[:-1])
+        #     if m_id in struct_data.index:
+        #         m['smiles'] = struct_data.loc[m_id].replace('/','')
         return Response(model)
 
 class GetMap(APIView):

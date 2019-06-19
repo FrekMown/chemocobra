@@ -34,9 +34,7 @@ export default class ReactionResults extends Component {
       this.state.selReactionId, 
       this.context.allScens,
       this.context.respfba,
-      0.9);
-    console.log('resFVA', resFVA);
-    
+      1);    
     this.setState({dataFVA: resFVA})
 
   }
@@ -106,7 +104,6 @@ export default class ReactionResults extends Component {
     else if (this.state.tab === "FVA") {
       
       content = (
-        // <h4>FVA plot here</h4>
         <div id='reaction-json-table'>
           <JsonToTable json={this.state.dataFVA} id="reaction-json-table" />
         </div>

@@ -22,10 +22,10 @@ export default class MetabolicMap extends Component {
   }
 
   componentDidUpdate(_, prevState) {
-    let mapChanged = this.state.selMapId !== prevState.selMapId;
-    if (mapChanged) {
+    // let mapChanged = this.state.selMapId !== prevState.selMapId;
+    // if (mapChanged) {
       this.loadEscher();
-    }
+    // }
   } 
 
   loadEscher() {
@@ -81,14 +81,14 @@ export default class MetabolicMap extends Component {
   }
 
   handleScenChange(e) {
-    let scen = this.context.getScen(e.target.value)
+    let scen = this.context.getScen(e.target.value);
     this.context.setSelScenId(scen.id);
   }
   
   render() {
     // Define select menu for map selection
     let mapOptions = [(
-      <option key={'None'}>No map</option>
+      <option key={'None'} value="None">No map</option>
     )];
     mapOptions.push(this.context.allMapIds.map(mapId => (
       <option key={mapId}>{mapId}</option>

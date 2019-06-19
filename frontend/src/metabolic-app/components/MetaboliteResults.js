@@ -18,14 +18,14 @@ export default class MetaboliteResults extends Component {
   async componentDidUpdate(_,prevState) {
     // get structure image as svg
     let metChanged = this.state.selMetaboliteId !== prevState.selMetaboliteId;
-    if (metChanged && this.state.selMetaboliteId !== 'None' && this.state.metabolite !== {}) {
+    if (metChanged && this.state.metabolite !== {}) {
       let imgURL = `chemo/get_svg_metabolite/${this.state.metabolite.id}`;
-      let structSVG = await fetch(imgURL).then(response=>response.text());
+      let structSVG;
+      if (this.state.selMetaboliteId === 'None') structSVG = '';
+      else structSVG = await fetch(imgURL).then(response=>response.text());
       this.setState({structSVG});
     }
-    else if (this.state.selMetaboliteId === "None") {
-      this.setState({structSVG:''})
-    }
+  
   }
 
   handleChangeTab(e) {
