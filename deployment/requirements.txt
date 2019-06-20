@@ -1,7 +1,11 @@
+reportlab
+biopython
 pandas
-cameo
-jupyter
+regex
 django
+mod_wsgi
 djangorestframework
-django-cors-headers
-
+openpyxl
+xlrd
+xlwt
+cameo
