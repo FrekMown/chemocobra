@@ -3,6 +3,8 @@
     margin: 4px;
     padding: 4px;
     border-radius: 5px;
+    display: flex;
+    align-items: center;
 }
 
 #new-scen-form {
@@ -16,6 +18,8 @@
     margin-right: 4px;
     margin-left: 4px;
     font-weight: bold;
+    color: blue;
+    
 }
 
 #ModelForm label {

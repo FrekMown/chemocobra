@@ -13,7 +13,7 @@ export async function runFVAforReaction(reactId, allScens, respfba, fractionOpti
     {
       scen: allScens[counter].id, 
       min: res.min.toFixed(3)|| 0, 
-      pFBA: respfba[allScens[counter].id][reactId].toFixed(3) || 0,
+      pFBA: (respfba[allScens[counter].id][reactId] || 0).toFixed(3),
       max: res.max.toFixed(3)|| 0
     }
   ));

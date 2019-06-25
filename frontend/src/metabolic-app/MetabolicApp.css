@@ -27,13 +27,16 @@ body {
     border: 2px solid darkred;
     background-color: whitesmoke;
     border-radius: 10px;
-    margin: 3px;  
+    margin: 3px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 #ModelForm {
     margin: 2px;
     padding: 4px;
     padding-bottom: 8px;
-    border-bottom: 1px solid gray;
+    /* border-bottom: 1px solid gray; */
 }
 #ScenOptions {
     flex: 0 0 28%;
@@ -88,6 +91,9 @@ body {
 #results-left {
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
+    /* border: 4px solid red; */
     height: 100%;
     width: 30%;
 }
+
