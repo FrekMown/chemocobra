@@ -20,10 +20,6 @@ export default class ReactionResults extends Component {
 
 
   async componentDidUpdate(_,prevState) {
-    // let changeFVA =  ||
-    //   (prevState.fractOptimum !== this.state.fractOptimum) ;
-    // changeFVA = changeFVA && this.state.selReactionId !== "None";
-    // if(changeFVA) this.runFVASelReaction();
     if (prevState.selReactionId !== this.state.selReactionId && this.state.selReactionId !== "None") {
       this.runFVASelReaction();
     }
@@ -52,7 +48,7 @@ export default class ReactionResults extends Component {
   }
 
   handleReactionChange(e) {
-    this.setState({selReactionId: e.target.value});    
+    this.setState({selReactionId: e.target.value, dataFVA: {}});    
   }
 
   handleChangeTab(e) {

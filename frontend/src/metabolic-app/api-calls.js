@@ -7,18 +7,16 @@ export async function runFVAforReaction(reactId, allScens, respfba, fractionOpti
       .catch(response=>console.log(response))
     ));
   let result = await Promise.all(promises)
-  console.log('result1', result);
 
   let result2 = result.map((res,counter) => (
     {
       scen: allScens[counter].id, 
       min: res.min.toFixed(3)|| 0, 
       pFBA: (respfba[allScens[counter].id][reactId] || 0).toFixed(3),
-      max: res.max.toFixed(3)|| 0
+      max: res.max.toFixed(3)|| 0,
     }
   ));
 
-  console.log('result2', result);
   return result2;
 }
 

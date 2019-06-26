@@ -29605,7 +29605,7 @@
 "metabolites":{
 "cbl1_e":-1.0
 },
-"lower_bound":0.0,
+"lower_bound":-1000,
 "upper_bound":1000.0,
 "gene_reaction_rule":"",
 "subsystem":"Extracellular exchange",

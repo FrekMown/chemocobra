@@ -1,4 +1,3 @@
-import cameo
 from chemocobra.settings import STATIC_DIR
 import os
 import numpy as np
@@ -15,7 +14,7 @@ def get_scen_from_request(request):
 
 def get_model_from_scen(scen):
     folder_models = os.path.join(STATIC_DIR,'metabolic','models')
-    model = cameo.load_model(os.path.join(folder_models,scen['baseModelId']+'.json'))
+    model = cobra.io.load_json_model(os.path.join(folder_models,scen['baseModelId']+'.json'))
     model.objective = scen['objective']
     if 'modifReacts' in scen:
         for react_id in scen['modifReacts']:
@@ -30,6 +29,7 @@ def run_pfba(model):
     If infeasible return all fluxes to 0.
     """
     thr = 10E-6
+    
     sol = cobra.flux_analysis.parsimonious.pfba(model).fluxes
     return sol[sol.apply(abs)>thr].to_dict()
 
@@ -37,8 +37,15 @@ def run_fva(model,reaction_id,fractionOptimum):
     """
     Returns [lower_bound,upper_bound] for a specific reaction
     """
-    res = cameo.flux_variability_analysis(model,[reaction_id],fraction_of_optimum=fractionOptimum)
+    # res = cameo.flux_variability_analysis(model,[reaction_id],fraction_of_optimum=fractionOptimum)
+    res = cobra.flux_analysis.variability.flux_variability_analysis(model,[reaction_id], 
+        fraction_of_optimum=fractionOptimum)
     return {
-        'min': res.data_frame['lower_bound'].values[0],
-        'max': res.data_frame['upper_bound'].values[0]
+        'min': res.loc[reaction_id,'minimum'],
+        'max': res.loc[reaction_id,'maximum'],
     }
+
+    # return {
+    #     'min': res.data_frame['lower_bound'].values[0],
+    #     'max': res.data_frame['upper_bound'].values[0]
+    # }
