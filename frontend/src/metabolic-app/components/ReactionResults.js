@@ -19,15 +19,15 @@ export default class ReactionResults extends Component {
   static contextType = AppContext;
 
 
-  async componentDidUpdate(_,prevState) {
-    if (prevState.selReactionId !== this.state.selReactionId && this.state.selReactionId !== "None") {
-      this.runFVASelReaction();
-    }
-  }
+  // async componentDidUpdate(_,prevState) {
+  //   if (prevState.selReactionId !== this.state.selReactionId && this.state.selReactionId !== "None") {
+  //     this.runFVASelReaction();
+  //   }
+  // }
   
-  async runFVASelReaction() {
+  async runFVA(reactId) {
     let resFVA = await apiCalls.runFVAforReaction(
-      this.state.selReactionId, 
+      reactId, 
       this.context.allScens,
       this.context.respfba,
       1);    
@@ -48,7 +48,8 @@ export default class ReactionResults extends Component {
   }
 
   handleReactionChange(e) {
-    this.setState({selReactionId: e.target.value, dataFVA: {}});    
+    this.setState({selReactionId: e.target.value, dataFVA: {}});
+    this.runFVA(e.target.value);
   }
 
   handleChangeTab(e) {

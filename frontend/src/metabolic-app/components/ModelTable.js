@@ -146,7 +146,8 @@ export default class ModelTable extends Component {
         data={dataTable}
         columns={columns}
         filterable
-        defaultPageSize={15}
+        defaultPageSize={10}
+        pageSizeOptions={[10,15,20]}
         noDataText={"Please Choose a Model Above"}
         defaultFilterMethod={(filter, row, column) => {
           const id = filter.pivotId || filter.id;
