@@ -2,7 +2,7 @@ import cameo
 from chemocobra.settings import STATIC_DIR
 import os
 import numpy as np
-
+import cobra
 
 def get_scen_from_request(request):
     baseModelId = request.query_params.get('baseModelId')
@@ -29,12 +29,9 @@ def run_pfba(model):
     Returns a pandas series with fluxes for all reactions in model.
     If infeasible return all fluxes to 0.
     """
-    try:
-        res = cameo.pfba(model,model.objective).fluxes.to_dict()
-        res = {r_id:res[r_id] for r_id in res.keys() if np.abs(res[r_id])>0.00001}
-    except:
-        res = {}
-    return res
+    thr = 10E-6
+    sol = cobra.flux_analysis.parsimonious.pfba(model).fluxes
+    return sol[sol.apply(abs)>thr].to_dict()
 
 def run_fva(model,reaction_id,fractionOptimum):
     """
