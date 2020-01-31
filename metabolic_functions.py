@@ -32,22 +32,16 @@ def run_pfba(model):
     """
     thr = 10E-6
     
-    sol = cobra.flux_analysis.parsimonious.pfba(model).fluxes
+    sol = cobra.flux_analysis.parsimonious.pfba(model).fluxes.round(3)
     return sol[sol.apply(abs)>thr].to_dict()
 
 def run_fva(model,reaction_id,fractionOptimum):
     """
     Returns [lower_bound,upper_bound] for a specific reaction
     """
-    # res = cameo.flux_variability_analysis(model,[reaction_id],fraction_of_optimum=fractionOptimum)
     res = cobra.flux_analysis.variability.flux_variability_analysis(model,[reaction_id], 
         fraction_of_optimum=fractionOptimum)
     return {
         'min': res.loc[reaction_id,'minimum'],
         'max': res.loc[reaction_id,'maximum'],
     }
-
-    # return {
-    #     'min': res.data_frame['lower_bound'].values[0],
-    #     'max': res.data_frame['upper_bound'].values[0]
-    # }

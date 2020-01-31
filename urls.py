@@ -13,8 +13,7 @@ metabolic_urls = [
 ]
 
 chemo_urls = [
-    path('get_svg_metabolite/<str:m_id>', chemo_views.get_svg_metabolite, name='get_svg_metabolite'),
-    
+    path('get_svg_metabolite/<str:m_id>', chemo_views.get_svg_metabolite, name='get_svg_metabolite'),    
 ]
 
 urlpatterns = [

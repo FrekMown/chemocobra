@@ -1,8 +1,10 @@
 
+const apiURL = "/chemocobra/";
+
 // Runs FVA for a specific reaction given a list of scenarios
 export async function runFVAforReaction(reactId, allScens, respfba, fractionOptimum) {
   let promises = allScens.map((scen) => (
-    fetch(`metabolic/run_fva/?${scenAsParams(scen)}&reactId=${reactId}&fractionOpt=${fractionOptimum}`)
+    fetch(apiURL+`metabolic/run_fva/?${scenAsParams(scen)}&reactId=${reactId}&fractionOpt=${fractionOptimum}`)
       .then(response=>response.json())
       .catch(response=>console.log(response))
     ));
@@ -21,13 +23,14 @@ export async function runFVAforReaction(reactId, allScens, respfba, fractionOpti
 
 // Get available maps and models
 export async function getAvailableModels() {
-  let availableModels = await fetch('metabolic/see_available_models')
+  let availableModels = await fetch(apiURL + 'metabolic/see_available_models')
       .then(response => response.json())
       .catch(response => console.log(response))
   return availableModels;
 }
+
 export async function getAvailableMaps() {
-  let availableMaps = await fetch('metabolic/see_available_maps')
+  let availableMaps = await fetch(apiURL + 'metabolic/see_available_maps')
       .then(response => response.json())
       .catch(response => console.log(response))
   return availableMaps;
@@ -35,7 +38,7 @@ export async function getAvailableMaps() {
 
 // Run pfba and returns result
 export async function runpFBA(scen) {
-  let addr = `metabolic/run_pfba/?${scenAsParams(scen)}`
+  let addr = apiURL + `metabolic/run_pfba/?${scenAsParams(scen)}`
   let res = await fetch(addr).then(response=>response.json())
   return res;
 }
@@ -53,14 +56,14 @@ function scenAsParams(scen) {
 }
 
 export async function getMapFromId(mapId) {
-  let mapOut = await fetch(`metabolic/get_map/?id=${mapId}`)
+  let mapOut = await fetch(apiURL + `metabolic/get_map/?id=${mapId}`)
     .then(response => response.json())
     .catch(response => console.log(response));
   return mapOut;
 }
 
 export async function getModelFromId(modelId,addReactionString=false) {
-  let modelOut = await fetch(`metabolic/get_model/?id=${modelId}`)
+  let modelOut = await fetch(apiURL + `metabolic/get_model/?id=${modelId}`)
     .then(response => response.json())
     .then(model => {
       if (addReactionString) {
