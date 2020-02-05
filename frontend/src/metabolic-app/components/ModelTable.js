@@ -98,6 +98,7 @@ export default class ModelTable extends Component {
           <div
             id="edit-button"
             onClick={this.setEditingReaction.bind(this, props.original)}
+            style={{cursor: "pointer"}}
           > Edit
               </div>
         )
@@ -110,7 +111,7 @@ export default class ModelTable extends Component {
     // Creation of columns for table
     const columns = [
       {
-        Header: 'Description',
+        Header: 'Explore and edit reaction flux limits',
         columns: [
           { Header: 'ID', accessor: 'id', width: 80, style: { fontWeight: 'bold' } },
           { Header: 'Name', accessor: 'name' },
@@ -136,7 +137,7 @@ export default class ModelTable extends Component {
     // Define data for table
     let dataTable = [];
     let modelId = this.props.tableScen.baseModelId
-    if (modelId !== "noModel" && Object.keys(this.context.getModel(modelId).length > 0)) {
+    if (modelId !== "" && this.context.getModel(modelId)) {
       dataTable = this.context.getModel(this.props.tableScen.baseModelId).reactions;
     }
 

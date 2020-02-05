@@ -20,6 +20,7 @@ class App extends Component {
       allScens: [], // All defined scenarios
       selScenId: '', // selected scenario for plot with escher
       page: 'options', //can be options or results
+      createNewScen: true, // can be create or edit
       allModels: [], // All downloaded models
       respfba: {}, // scen -> object with keys reactions and values object with reactions->flux
     };
@@ -30,6 +31,11 @@ class App extends Component {
     let allModelIds = await apiCalls.getAvailableModels();
     let allMapIds = await apiCalls.getAvailableMaps();
     this.setState({ allModelIds, allMapIds });
+  }
+
+
+  getObjectiveReaction(model) {
+    return model.reactions.filter(r => "objective_coefficient" in r && r["objective_function"]!==0)[0];
   }
 
   // thr --> sum of absolute values to keep. To be implemented.
@@ -134,6 +140,8 @@ class App extends Component {
     this.setState({ selScenId });
   }
 
+  setCreateNewScen = bool => this.setState({createNewScen: bool});
+
   getSelScen = () => {
     if (this.state.selScenId !== '') return this.state.allScens.filter(scen => scen.id === this.state.selScenId)[0];
     else return {};
@@ -160,23 +168,28 @@ class App extends Component {
     })
     this.setState({ allScens });
   }
+  
   addScen = (selScen) => {
     this.setState(state => ({ allScens: state.allScens.filter(scen => scen.id !== selScen.id).concat([selScen]) }))
   }
+
   removeScen = (selScen) => {
     this.setState(state => ({ allScens: state.allScens.filter(scen => scen.id !== selScen.id) }))
   }
+
   // returns model if it is already stored
   getModel(modelId) {
     let modelOut = this.state.allModels.filter(model => model.id === modelId);
     if (modelOut.length > 0) return modelOut[0];
-    else return {}
+    else return null;
   }
+
   getScen(scenId) {
     let scenOut = this.state.allScens.filter(scen => scen.id === scenId);
     if (scenOut.length > 0) return scenOut[0];
     else return {}
   }
+
   // Loads model if not already in allModels
   async loadModel(modelId) {
     if (!(modelId in this.state.allModels)) {
@@ -185,6 +198,7 @@ class App extends Component {
       this.setState({ allModels });
     }
   }
+
   // Switches page options vs results
   async switchMainPage() {
     if (this.state.page === 'options') {
@@ -226,6 +240,8 @@ class App extends Component {
       getMetaboliteIds: this.getMetaboliteIds.bind(this),
       getMetaboliteFromId: this.getMetaboliteFromId.bind(this),
       getMetaboliteBalance: this.getMetaboliteBalance.bind(this),
+      setCreateNewScen: this.setCreateNewScen.bind(this),
+      getObjectiveReaction: this.getObjectiveReaction.bind(this),
     }
 
     // Definition of main content

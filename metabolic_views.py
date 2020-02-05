@@ -35,16 +35,16 @@ class RunFVA(APIView):
 
 class GetAvailableModels(APIView):
     """
-    Returns all afuncsvailable models locally
+    Returns all available models locally
     """
     def get(self,request):
         models_path = os.path.join(STATIC_DIR,'metabolic','models')
-        available_models = [f.split('.')[0] for f in os.listdir(models_path) if f.endswith('.json')]
+        available_models = sorted([f.split('.')[0] for f in os.listdir(models_path) if f.endswith('.json')])
         return Response(available_models)
 
 class GetAvailableMaps(APIView):
     """
-    Returns all afuncsvailable models locally
+    Returns all available maps locally
     """
     def get(self,request):
         maps_path = os.path.join(STATIC_DIR,'metabolic','maps')

@@ -3,6 +3,7 @@ import './ScenOptions.css';
 import AppContext from '../app-context';
 import ScenElement from './ScenElement';
 
+
 class ScenOptions extends Component {
   static contextType = AppContext;
 
@@ -17,9 +18,9 @@ class ScenOptions extends Component {
 
     return (
       <div id="ScenOptions">
-      <div id="scen-options-title">
-        List Scenarios
-      </div>
+        <div id="scen-options-title">
+          List Scenarios
+        </div>
         <div id="scen-options-elements">
           {allScenElements}
         </div>
@@ -28,4 +29,4 @@ class ScenOptions extends Component {
   }
 }
 
-  export default ScenOptions;
+export default ScenOptions;
