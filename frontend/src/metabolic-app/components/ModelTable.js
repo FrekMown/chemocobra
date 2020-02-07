@@ -111,7 +111,7 @@ export default class ModelTable extends Component {
     // Creation of columns for table
     const columns = [
       {
-        Header: 'Explore and edit reaction flux limits',
+        Header: this.context.createNewScen ? "Save Scenario to modify flux limits" : 'Explore and edit reaction flux limits',
         columns: [
           { Header: 'ID', accessor: 'id', width: 80, style: { fontWeight: 'bold' } },
           { Header: 'Name', accessor: 'name' },

@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
 body {
     color: rgb(65, 65, 65);
+    font-family: 'Roboto', sans-serif;
 }
 #App {
     display: flex;
@@ -21,6 +24,7 @@ body {
     flex-grow: 0;
     overflow: hidden;
     height: 100%;
+    justify-content: space-around;
 }
 #ModelDescription {
     flex: 0 0 69%;
@@ -39,7 +43,7 @@ body {
     /* border-bottom: 1px solid gray; */
 }
 #ScenOptions {
-    flex: 0 0 28%;
+    flex: 0 0 29%;
     overflow: hidden;
     padding: 4px;
     border: 2px solid darkred;

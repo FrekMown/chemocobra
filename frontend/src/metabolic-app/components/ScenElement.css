@@ -1,40 +1,43 @@
 #ScenElement {
     font-size: 0.7em;
-    border: 2px solid black;
-    margin: 4px;
-    border-radius: 5px;
-    background-color: lightblue;
+    border: 1px solid black;
+    margin: 20px;
+    padding: 10px 20px;
     cursor: pointer;
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
 }
 
-#ScenElement 
+#ScenElement:hover {
+    /* box-shadow: none; */
+    background-color: lightgray;
+}
 
-#scen-element-first-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 2px solid darkblue;
-    background-color: darkblue;
-    color: white;
-    padding-bottom: 1px;
-    padding-left: 4px;
-    padding-right: 4px;
+#ScenElement.selected {
+    background-color: rgb(215, 226, 230);
+    /* color: wheat; */
+}
+
+#ScenElement>div {
+    margin-top: 5px;
+}
+
+#scen-element-title {
+    border-bottom: 1px solid black;
+    font-size: 1.1em;
+    text-align: center;
     font-weight: bold;
-    font-size: 1.2em;
-}
-
-#scen-element-second-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 5px;
-}
-
-#scen-element-reactions {
-    padding: 4px;
 }
 
 #scen-element-remove {
     color: red;
     padding-right: 5px;
+}
+
+#ScenElement .modif-reaction {
+    font-size: 0.9em;
+    margin: 3px 0 0 20px;
+}
+
+#ScenElement .modif-reaction:before {
+    content: "✔ ";
 }

@@ -15,7 +15,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      allModelIds: [], // Ids of available models
+      allModelIds: {}, // Ids of available models
       allMapIds: [],
       allScens: [], // All defined scenarios
       selScenId: '', // selected scenario for plot with escher
@@ -33,9 +33,14 @@ class App extends Component {
     this.setState({ allModelIds, allMapIds });
   }
 
+  getObjectiveReactionScen(scen) {
+    const model = this.getModel(scen.baseModelId);
+    return model.reactions.filter(r => r.id === scen.objective)[0];
+  }
+
 
   getObjectiveReaction(model) {
-    return model.reactions.filter(r => "objective_coefficient" in r && r["objective_function"]!==0)[0];
+    return model.reactions.filter(r => "objective_coefficient" in r && r["objective_function"] !== 0)[0];
   }
 
   // thr --> sum of absolute values to keep. To be implemented.
@@ -140,7 +145,7 @@ class App extends Component {
     this.setState({ selScenId });
   }
 
-  setCreateNewScen = bool => this.setState({createNewScen: bool});
+  setCreateNewScen = bool => this.setState({ createNewScen: bool });
 
   getSelScen = () => {
     if (this.state.selScenId !== '') return this.state.allScens.filter(scen => scen.id === this.state.selScenId)[0];
@@ -168,9 +173,20 @@ class App extends Component {
     })
     this.setState({ allScens });
   }
-  
+
   addScen = (selScen) => {
-    this.setState(state => ({ allScens: state.allScens.filter(scen => scen.id !== selScen.id).concat([selScen]) }))
+    this.setState(state => {
+      const idxScen = state.allScens.map(scen => scen.id).indexOf(selScen.id);
+      console.log(selScen, idxScen);
+      if (idxScen === -1) {
+        return {allScens: state.allScens.concat([selScen])};
+      }
+      else {
+        const newAllScens = [...state.allScens];
+        newAllScens[idxScen] = selScen;
+        return {allScens: newAllScens};
+      }
+    })
   }
 
   removeScen = (selScen) => {
@@ -187,7 +203,7 @@ class App extends Component {
   getScen(scenId) {
     let scenOut = this.state.allScens.filter(scen => scen.id === scenId);
     if (scenOut.length > 0) return scenOut[0];
-    else return {}
+    else return null;
   }
 
   // Loads model if not already in allModels
@@ -242,6 +258,7 @@ class App extends Component {
       getMetaboliteBalance: this.getMetaboliteBalance.bind(this),
       setCreateNewScen: this.setCreateNewScen.bind(this),
       getObjectiveReaction: this.getObjectiveReaction.bind(this),
+      getObjectiveReactionScen: this.getObjectiveReactionScen.bind(this),
     }
 
     // Definition of main content

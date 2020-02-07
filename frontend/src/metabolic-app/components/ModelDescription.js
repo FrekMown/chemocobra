@@ -12,6 +12,8 @@ import FormControl from '@material-ui/core/FormControl';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import DeleteIcon from '@material-ui/icons/Delete';
+import SaveIcon from '@material-ui/icons/Save';
 
 class ModelDescription extends Component {
 
@@ -22,9 +24,8 @@ class ModelDescription extends Component {
       newScenId: "",
       newScenBaseModelId: "",
       newScenObjectiveReaction: null,
-      objectiveOK: false,
       // Choose an existing scenario
-      chosenScenId: '',
+      editingScen: null,
     }
   }
   static contextType = AppContext;
@@ -34,6 +35,7 @@ class ModelDescription extends Component {
   // **************************************
 
   componentDidUpdate(_, prevState) {
+    // Deal with objective reaction when base model changes
     const modelChanged = prevState.newScenBaseModelId !== this.state.newScenBaseModelId;
     if (modelChanged) {
       this.setState({ newScenObjectiveReaction: null });
@@ -45,6 +47,24 @@ class ModelDescription extends Component {
         this.setState({ newScenObjectiveReaction: this.context.getObjectiveReaction(model) });
       }
     }
+
+    // If editing a scenario, at the beginning change values in form
+    if (this.context.createNewScen && this.state.editingScen !== null) {
+      this.setState({ editingScen: null });
+    }
+    else if (!(this.context.createNewScen)) {
+      if (this.state.editingScen === null || this.state.editingScen.id !== this.context.selScenId) {
+        const scen = this.context.getScen(this.context.selScenId);
+        console.log("editing scen", scen);
+        this.setState({
+          editingScen: scen,
+          newScenId: scen.id,
+          newScenBaseModelId: scen.baseModelId,
+          newScenObjectiveReaction: this.context.getObjectiveReactionScen(scen),
+        });
+      }
+    }
+
 
 
   }
@@ -66,37 +86,23 @@ class ModelDescription extends Component {
     if (e.target.value !== "") this.context.loadModel(e.target.value);
   }
 
-  handleObjectiveChange(e) {
-    let newScenObjectiveId = e.target.value;
-    // let objectiveOK = false;
-    // if (this.context.createNewScen && this.state.newScenBaseModelId !== "") {
-    //   objectiveOK = this.context.getModel(this.state.newScenBaseModelId).reactions.filter(r => (
-    //     r.id === newScenObjectiveId
-    //   )).length > 0;
-    // }
-    this.setState({ newScenObjectiveId });
-  }
-
   handleSaveButton() {
     // Create new scen and add it to context.allScens
     // set newScen as new selScen.
+
     let newScen = {
       id: this.state.newScenId,
       modifReacts: [],
       objective: this.state.newScenObjectiveReaction.id,
       baseModelId: this.state.newScenBaseModelId,
-    }
+      baseModelName: this.context.allModelIds[this.state.newScenBaseModelId]
+    };
     this.context.addScen(newScen);
+    console.log("allScens", this.context.allScens);
     this.context.setSelScenId(this.state.newScenId);
     this.context.setCreateNewScen(false);
-    // this.setState({createNewScen: false});
-    // Reset state variables
-    // this.setState({
-    //   newScenId: 'New Scenario',
-    //   newScenBaseModelId: 'noModel',
-    //   newScenObjectiveReaction: null,
-    //   // objectiveOK: false,
-    // })
+    console.log("New Scen created:", newScen);
+
   }
 
   handleAddScenario() {
@@ -107,6 +113,20 @@ class ModelDescription extends Component {
     });
     this.context.setCreateNewScen(true);
   }
+
+  handleClearButton(){
+    this.context.removeScen(this.context.getSelScen());
+    this.context.setCreateNewScen(true);
+    this.setState({
+      newScenId: "",
+      newScenBaseModelId: "",
+      newScenObjectiveReaction: null,
+      // Choose an existing scenario
+      editingScen: null,
+    })
+  }
+
+
 
 
   // ***************************************
@@ -137,23 +157,33 @@ class ModelDescription extends Component {
           renderInput={params => (<TextField {...params} label="Objective Function" variant="outlined" fullWidth />)}
           value={this.state.newScenObjectiveReaction}
           onChange={(_, val) => this.setState({ newScenObjectiveReaction: val })}
-          style={{ minWidth: 500 }}
+          style={{ minWidth: 400 }}
+          disabled={!(this.context.createNewScen)}
         />
       );
     }
 
 
+
     const secondForm = (
       <form>
         {/* Base Model */}
-        <FormControl>
+        <FormControl
+            disabled={!(this.context.createNewScen)}
+        
+        >
           <FormLabel component="legend">Please Choose a Model</FormLabel>
           <RadioGroup
             value={this.state.newScenBaseModelId}
             onChange={this.handleChangeBaseModelId.bind(this)}
           >
-            {this.context.allModelIds.map(mapName => (
-              <FormControlLabel value={mapName} control={<Radio />} label={mapName} key={mapName} />
+            {Object.keys(this.context.allModelIds).map(mapId => (
+              <FormControlLabel
+                value={mapId}
+                control={<Radio />}
+                label={`${mapId} - ${this.context.allModelIds[mapId]}`}
+                key={mapId}
+              />
             ))}
           </RadioGroup>
         </FormControl>
@@ -165,77 +195,13 @@ class ModelDescription extends Component {
           label="  Scenario Name / Id"
           value={this.state.newScenId}
           onChange={this.handleChangeScenId.bind(this)}
-          style={{ minWidth: 500 }}
+          style={{ minWidth: 400 }}
+          disabled={!(this.context.createNewScen)}
         />
         {/* Objective Function */}
         {objReaction}
       </form>
     );
-
-    // if (this.context.createNewScen) {
-    //   let baseModelOptions = [(
-    //     <option value={"noModel"} key="noModel">Please Choose a Model</option>
-    //   )];
-
-    //   baseModelOptions.push(this.context.allModelIds.map(mapId => (
-    //     <option key={mapId}>{mapId}</option>
-    //   )));
-
-
-
-    //   secondForm = (
-    //     <div id="new-scen-form">
-    //       <label>
-    //         Scenario Name
-    //         <input
-    //           type="text"
-    //           value={this.state.newScenId}
-    //           onChange={this.handleChangeScenId.bind(this)}
-    //         />
-    //       </label>
-    //       <label>
-    //         Base Model
-    //         <select
-    //           value={this.state.newScenBaseModelId}
-    //           onChange={this.handleChangeBaseModelId.bind(this)}
-    //         >
-    //           {baseModelOptions}
-    //         </select>
-    //       </label>
-    //       <label>
-    //         Objective
-    //         <input
-    //           type="text"
-    //           value={this.state.newScenObjectiveId}
-    //           onChange={this.handleObjectiveChange.bind(this)}
-    //           style={objectiveStyle}
-    //         />
-    //       </label>
-    //       <button
-    //         disabled={!formOK}
-    //         onClick={this.handleSaveButton.bind(this)}
-    //       >
-    //         Save
-    //       </button>
-    //     </div>
-    //   );
-    // }
-    // else {
-    //   let scenOptions = this.context.allScens.map(scen => (
-    //     <option key={scen.id}>{scen.id}</option>
-    //   ))
-    //   secondForm = (
-    //     <label>
-    //       Choose Scenario:
-    //       <select
-    //         value={this.context.selScenId}
-    //         onChange={e => this.context.setSelScenId(e.target.value)}
-    //       >
-    //         {scenOptions}
-    //       </select>
-    //     </label>
-    //   )
-    // }
 
     const title = (
       <div id="title">
@@ -244,6 +210,34 @@ class ModelDescription extends Component {
           `Edit Scenario: ${this.context.selScenId}`}
       </div>
     );
+
+    const buttonSave = this.context.createNewScen ?
+      (
+        <Button
+          variant="contained"
+          color="primary"
+          id="save-button"
+          disabled={this.state.newScenId.length === 0 || this.state.newScenBaseModelId.length === 0}
+          onClick={this.handleSaveButton.bind(this)}
+          startIcon={<SaveIcon />}
+        >
+          Save
+        </Button>
+      ) : null;
+
+    const clearButton = this.context.createNewScen ? null :
+      (
+        <Button
+          variant="contained"
+          color="secondary"
+          id="clear-button"
+          startIcon={<DeleteIcon />}
+          onClick={this.handleClearButton.bind(this)}
+        >
+          Delete
+        </Button>
+      );
+
 
 
     return (
@@ -258,19 +252,9 @@ class ModelDescription extends Component {
         {secondForm}
 
         <div id="buttons">
-          <Button
-            variant="contained"
-            color="primary"
-            id="save-button"
-            disabled={this.state.newScenId.length === 0 || this.state.newScenBaseModelId.length === 0}
-            onClick={this.handleSaveButton.bind(this)}
-          >
-            Save
-        </Button>
+          {buttonSave}
+          {clearButton}
 
-          <Button variant="contained" color="secondary" id="clear-button">
-            Clear
-        </Button>
 
         </div>
 
@@ -280,7 +264,7 @@ class ModelDescription extends Component {
           />
         </div>
 
-        
+
       </div>
     );
 

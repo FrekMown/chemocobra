@@ -2,11 +2,6 @@ import React, { Component } from 'react';
 import './MetabolicMap.css';
 import AppContext from '../app-context';
 import * as apiCalls from '../api-calls';
-// import * as escher from 'escher-vis';
-// import './builder.css';
-// import escher from './escher';
-
-
 
 export default class MetabolicMap extends Component {
   constructor(props) {
@@ -35,64 +30,15 @@ export default class MetabolicMap extends Component {
     )
   }
 
-  componentDidUpdate(_, prevState) {
-    // let mapChanged = this.state.selMapId !== prevState.selMapId;
-    // if (mapChanged) {
+  componentDidUpdate() {
     window.changeMapEscher(
       this.context.getSelScen(),
       this.context.getModel(this.context.getSelScen().baseModelId),
       this.context.respfba,
       this.state.selMap,
     )
-    // }
   }
 
-  // loadEscher() {
-  //   // Model
-  //   let scen = this.context.getSelScen();
-  //   let model = this.context.getModel(scen.baseModelId);
-
-  //   // Create dictionary with data for escher
-  //   let reactionData = {}
-  //   for (let reaction of model.reactions) {
-  //     if (reaction.id in this.context.respfba[this.context.selScenId]) {
-  //       reactionData[reaction.id] = this.context.respfba[this.context.selScenId][reaction.id];
-  //     }
-  //     else {
-  //       reactionData[reaction.id] = 0;
-  //     }
-  //   }
-
-  //   let escherOptions = {
-  //     never_ask_before_quit: true,
-  //     reaction_style: ['color', 'size', 'text', 'abs'],
-  //     reaction_scale: [
-  //       { type: 'min', color: '#c8c8c8', size: 12 },
-  //       { type: 'max', color: '#66176d', size: 20 }
-  //     ]
-  //   };
-
-  //   if (this.escherRef.current !== null) {
-  //     // Create escher builder
-  //     console.log("definining builder");
-  //     console.log("map", this.state.selMap);
-  //     console.log("model", model);
-  //     console.log("htmlEL", this.escherRef.current);
-  //     console.log("options", escherOptions);
-  //     this.escherBuilder = window.escher.Builder(
-  //       this.state.selMap, // map_data
-  //       model, // model_data
-  //       null, // embedded_css
-  //       this.escherRef.current, // selection
-  //       escherOptions, // options
-  //     );
-
-  //     console.log("escherBuilder", this.escherBuilder);
-  //     console.log("applying reaction data");
-  //     // if (this.state.selMap && this.escherBuilder ) this.escherBuilder.set_reaction_data([reactionData]).call(this.state.selMap);
-
-  //   }
-  // }
 
   async handleMapChange(e) {
     let selMapId = e.target.value
