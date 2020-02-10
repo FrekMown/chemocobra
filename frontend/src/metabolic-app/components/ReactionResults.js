@@ -3,57 +3,64 @@ import './ReactionResults.css';
 import AppContext from '../app-context';
 import * as apiCalls from '../api-calls';
 import { JsonToTable } from 'react-json-to-table';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import TextField from '@material-ui/core/TextField';
+
 
 export default class ReactionResults extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selReactionId: 'None',
+      // selReactionId: 'None',
       fractOptimum: 0.9,
       correctFractOpt: true,
       inputfractOptimum: '0.9',
       dataFVA: {},
       tab: 'info', //can be either info or FVA
+      selReaction: {},
     }
   }
   static contextType = AppContext;
 
+  async componentDidMount() {
+    const scen = this.context.getSelScen();
+    const model = this.context.getModel(scen.baseModelId);
+    this.setState({
+      selReaction: model.reactions.filter(r => r.id === scen.objective)[0],
+    });
+    this.runFVA(scen.objective);
+  }
 
-  // async componentDidUpdate(_,prevState) {
-  //   if (prevState.selReactionId !== this.state.selReactionId && this.state.selReactionId !== "None") {
-  //     this.runFVASelReaction();
-  //   }
-  // }
-  
   async runFVA(reactId) {
     let resFVA = await apiCalls.runFVAforReaction(
-      reactId, 
+      reactId,
       this.context.allScens,
       this.context.respfba,
-      1);    
-    this.setState({dataFVA: resFVA})
+      1);
+    this.setState({ dataFVA: resFVA })
 
   }
 
   validateFractOpt(e) {
     // verify if input is correct
-    this.setState({inputfractOptimum: e.target.value});
+    this.setState({ inputfractOptimum: e.target.value });
     let correct = !isNaN(e.target.value);
-    if(correct) {
+    if (correct) {
       let number = Number(e.target.value);
-      correct = correct && number>0 && number <=1;
-      if(correct) this.setState({fractOptimum: number});
+      correct = correct && number > 0 && number <= 1;
+      if (correct) this.setState({ fractOptimum: number });
     }
-    this.setState({correctFractOpt: correct});
+    this.setState({ correctFractOpt: correct });
   }
 
-  handleReactionChange(e) {
-    this.setState({selReactionId: e.target.value, dataFVA: {}});
-    this.runFVA(e.target.value);
+  handleReactionChange(_, val) {
+    console.log("handleReactionChange", val);
+    this.setState({ selReaction: val, dataFVA: {} });
+    this.runFVA(val.id);
   }
 
   handleChangeTab(e) {
-    this.setState({tab: e.target.value});
+    this.setState({ tab: e.target.value });
   }
 
   render() {
@@ -63,12 +70,9 @@ export default class ReactionResults extends Component {
       <option key={rId}>{rId}</option>
     ));
 
-    // red background if fract optimum not valid
-    // let styleInput = {}
-    // if (!this.state.correctFractOpt) styleInput = {backgroundColor: 'LightCoral'}
-
     // Reaction
-    let reaction = this.context.getReactionFromId(this.state.selReactionId);
+    let reaction = this.state.selReaction;
+    console.log("reaction", reaction);
 
     // definition of main content depending on page
     let content;
@@ -99,7 +103,7 @@ export default class ReactionResults extends Component {
       );
     }
     else if (this.state.tab === "FVA") {
-      
+
       content = (
         <div id='reaction-json-table'>
           <JsonToTable json={this.state.dataFVA} id="reaction-json-table" />
@@ -113,27 +117,20 @@ export default class ReactionResults extends Component {
           Reactions Analysis
         </div>
         <div id="reaction-results-form">
-          <label>
-            Reaction? 
-            <select 
-              value={this.state.selReactionId}
+            <Autocomplete
+              id="reaction-analysis"
+              options={this.context.getReactions()}
+              getOptionLabel={reaction => `${reaction.id}: ${reaction.name}`}
+              renderInput={params => (<TextField {...params} label="Reaction" variant="outlined" fullWidth />)}
+              value={this.state.selReaction}
               onChange={this.handleReactionChange.bind(this)}
-            >{reactionOptions}
-            </select>
-          </label>
-          {/* <label>
-            Fraction of Optimum:
-            <input
-              type="text"
-              value={this.state.inputfractOptimum} 
-              onChange={this.validateFractOpt.bind(this)}
-              style={styleInput}
+              style={{ minWidth: 350 }}
+              disableClearable={true}
             />
-          </label> */}
         </div>
         <div id="reaction-results-radio" onChange={this.handleChangeTab.bind(this)}>
-          <input type="radio" value="info" name="radio" defaultChecked={true}/> Infos
-          <input type="radio" value="FVA" name="radio"/> FVA
+          <input type="radio" value="info" name="radio" defaultChecked={true} /> Infos
+          <input type="radio" value="FVA" name="radio" /> FVA
         </div>
         <div id="reaction-results-infos">
           {content}

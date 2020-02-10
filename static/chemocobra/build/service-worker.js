@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/static/chemocobra/build/precache-manifest.c52db2560238a825509a686acc21dffd.js"
+  "/static/chemocobra/build/precache-manifest.86177adaaa3d9fb44b725acbf0a806a4.js"
 );
 
 workbox.clientsClaim();

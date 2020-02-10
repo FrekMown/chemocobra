@@ -3,7 +3,8 @@
     display: flex;
     flex-direction: column;
     /* position: relative; */
-    font-size: 0.8em;
+    font-size: 0.6em;
+    overflow: auto;
 }
 #reaction-results-title {
     text-align: center;
@@ -44,4 +45,8 @@
     text-align: center;
     margin: 5px;
     font-weight: bold;
+}
+
+#ReactionResults th {
+    vertical-align: top;
 }

@@ -16,7 +16,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && rm -rf ../static/chemocobra/build && cp -r build/ ../static/chemocobra/ && rm -rf build",
+    "build": "react-scripts build && rm -rf ../static/chemocobra/build && mv build/ ../static/chemocobra/",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

@@ -35,13 +35,16 @@ def run_pfba(model):
     sol = cobra.flux_analysis.parsimonious.pfba(model).fluxes.round(3)
     return sol[sol.apply(abs)>thr].to_dict()
 
-def run_fva(model,reaction_id,fractionOptimum):
+def run_fva(model, reaction_id, fractionOptimum):
     """
     Returns [lower_bound,upper_bound] for a specific reaction
     """
-    res = cobra.flux_analysis.variability.flux_variability_analysis(model,[reaction_id], 
-        fraction_of_optimum=fractionOptimum)
-    return {
-        'min': res.loc[reaction_id,'minimum'],
-        'max': res.loc[reaction_id,'maximum'],
-    }
+    try:
+        res = cobra.flux_analysis.variability.flux_variability_analysis(model,[reaction_id], 
+            fraction_of_optimum=fractionOptimum)
+        return {
+            'min': res.loc[reaction_id,'minimum'],
+            'max': res.loc[reaction_id,'maximum'],
+        }
+    except:
+        return {'min': 0, 'max': 0}

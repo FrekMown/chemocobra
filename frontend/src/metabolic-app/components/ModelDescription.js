@@ -55,7 +55,6 @@ class ModelDescription extends Component {
     else if (!(this.context.createNewScen)) {
       if (this.state.editingScen === null || this.state.editingScen.id !== this.context.selScenId) {
         const scen = this.context.getScen(this.context.selScenId);
-        console.log("editing scen", scen);
         this.setState({
           editingScen: scen,
           newScenId: scen.id,
@@ -98,10 +97,8 @@ class ModelDescription extends Component {
       baseModelName: this.context.allModelIds[this.state.newScenBaseModelId]
     };
     this.context.addScen(newScen);
-    console.log("allScens", this.context.allScens);
     this.context.setSelScenId(this.state.newScenId);
     this.context.setCreateNewScen(false);
-    console.log("New Scen created:", newScen);
 
   }
 
@@ -159,6 +156,7 @@ class ModelDescription extends Component {
           onChange={(_, val) => this.setState({ newScenObjectiveReaction: val })}
           style={{ minWidth: 400 }}
           disabled={!(this.context.createNewScen)}
+          disableClearable={true}
         />
       );
     }

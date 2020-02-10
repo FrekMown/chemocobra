@@ -19,3 +19,7 @@
     height: 95%;
     border: 1px solid black;
 }
+
+.search-menu-container {
+    display: none;
+}

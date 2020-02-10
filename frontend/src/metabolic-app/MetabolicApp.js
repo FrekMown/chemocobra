@@ -8,7 +8,7 @@ import ReactionResults from './components/ReactionResults'
 import MetaboliteResults from './components/MetaboliteResults'
 import MetabolicMap from './components/MetabolicMap'
 import * as apiCalls from './api-calls';
-import './components/slack.css';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 class App extends Component {
@@ -80,6 +80,7 @@ class App extends Component {
       return metBalR;
     })
 
+    // console.log(metBalReacts);
     return metBalReacts;
 
     // return metaboliteBalance;
@@ -99,6 +100,24 @@ class App extends Component {
     metabolites.sort();
     return metabolites;
   }
+
+  // Returns sorted list of metabolites in current models
+  getMetabolites() {
+    let modelIds = this.state.allScens.map(scen => scen.baseModelId);
+    modelIds = Array.from(new Set(modelIds));
+    let metabolites = [];
+
+    modelIds.forEach(modelId => {
+      const model = this.getModel(modelId)
+      const metaboliteIds = metabolites.map(m => m.id);
+      const newMetabolites = model.metabolites.filter(m => metaboliteIds.indexOf(m.id) === -1);
+      metabolites = metabolites.concat(newMetabolites);
+    });
+
+    metabolites.sort((a, b) => a.id.localeCompare(b.id));
+    return metabolites;
+  }
+
 
   // Returns a metabolite object from the first occurence
   getMetaboliteFromId(metaboliteId) {
@@ -141,6 +160,23 @@ class App extends Component {
     return reactions;
   }
 
+  // Returns sorted list of reactions in current models
+  getReactions() {
+    let modelIds = this.state.allScens.map(scen => scen.baseModelId);
+    modelIds = Array.from(new Set(modelIds));
+    let reactions = [];
+
+    modelIds.forEach(modelId => {
+      const model = this.getModel(modelId)
+      const reactionIds = reactions.map(r => r.id);
+      const newReactions = model.reactions.filter(r => reactionIds.indexOf(r.id)===-1);
+      reactions = reactions.concat(newReactions);
+    });
+    
+    reactions.sort((a, b) => a.id.localeCompare(b.id));
+    return reactions;
+  }
+
   setSelScenId = (selScenId) => {
     this.setState({ selScenId });
   }
@@ -179,12 +215,12 @@ class App extends Component {
       const idxScen = state.allScens.map(scen => scen.id).indexOf(selScen.id);
       console.log(selScen, idxScen);
       if (idxScen === -1) {
-        return {allScens: state.allScens.concat([selScen])};
+        return { allScens: state.allScens.concat([selScen]) };
       }
       else {
         const newAllScens = [...state.allScens];
         newAllScens[idxScen] = selScen;
-        return {allScens: newAllScens};
+        return { allScens: newAllScens };
       }
     })
   }
@@ -259,6 +295,8 @@ class App extends Component {
       setCreateNewScen: this.setCreateNewScen.bind(this),
       getObjectiveReaction: this.getObjectiveReaction.bind(this),
       getObjectiveReactionScen: this.getObjectiveReactionScen.bind(this),
+      getReactions: this.getReactions.bind(this),
+      getMetabolites: this.getMetabolites.bind(this),
     }
 
     // Definition of main content
@@ -280,13 +318,12 @@ class App extends Component {
       content = (
         <div id="App">
           <Navbar />
-          <div id="App-content">
-            <div className="slack">
-              <span className="slack-dot slack-dot--a"></span>
-              <span className="slack-dot slack-dot--b"></span>
-              <span className="slack-dot slack-dot--c"></span>
-              <span className="slack-dot slack-dot--d"></span>
+          <div id="loader">
+            <div id="loader-title">
+              Running pFBA on models...
             </div>
+            <CircularProgress />
+
           </div>
         </div>
       );
